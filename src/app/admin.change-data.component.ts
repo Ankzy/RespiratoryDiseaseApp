@@ -4,37 +4,295 @@ import {NgForm} from '@angular/forms';
 
 @Component({
     selector: 'admin-change-data',
-    template: `<h3>Изменение обучающей выборки</h3>
-    <button *ngIf="!form_show" (click)="form_show=!form_show">Показать форму загрузки данных</button>
-    <div *ngIf="form_show">
-      <button (click)="form_show=!form_show">Скрыть форму загрузки данных</button>
-      <form #myForm="ngForm">
-        <div *ngFor="let feature of features">
-          {{feature.feature_name}}
-          <input *ngIf="feature.feature_type=='float'" [name]="feature.feature_name" type="number" 
-                 [min]="feature.left_border" [max]="feature.right_border" ngModel required>
-          <select *ngIf="feature.feature_type=='boolean'" [name]="feature.feature_name" ngModel required>
-            <option *ngFor="let app_value of feature.appropriate_values" [ngValue]="app_value">
-              {{app_value}}
-            </option>
-          </select>
-        </div>
-            <button type="submit" (click)="submit(myForm)" [disabled]="myForm.invalid">Отправить форму</button>
-      </form>
+    styles: [`
       
-    </div>
-    <ul>
-      <li *ngFor="let one of sample; index as i">
-        {{one.row_id}}
-        <button (click)="info(one)">Подробнее</button>
-        <button (click)="remove(one, i)">Удалить</button>
-        <div *ngIf="one.isshown">
-          <div *ngFor="let param of one | keyvalue">
-            <i>{{param.key}}</i> : <i>{{param.value}}</i>
+      .add-header {
+        margin-left: 135px;
+        margin-bottom: 20px;
+        margin-top: 20px;
+        
+      }
+      .list-header {
+        
+        text-align: center;
+        margin-right: 40px;
+        margin-bottom: 20px;
+        margin-top: 20px;
+        
+      }
+      .data-header {
+        margin-left: 608px;
+        margin-bottom: 25px;
+        margin-top: 40px;
+      }
+      .data {
+        /*background-color: #e3f2fd;*/
+        margin-left: 60px;
+        border-radius: 23px;
+       
+        padding-bottom: 14px;
+        
+        
+        margin-bottom: 14px;
+        
+      }
+      .data-index {
+        position: absolute;
+        
+      }
+      .info-button {
+        margin-left: 120px;
+        width: 150px;
+        border-radius: 6px;
+      }
+      .remove-button {
+        width: 150px;
+        border-radius: 6px;
+      
+      }
+      .div-data-form {
+        padding-left: 7px;
+        padding-right: 7px;
+        padding-top: 15px;
+        /*margin-left: 22px;*/
+        /*margin-right: 15px;*/
+        width: 1500px;
+        margin: 0 auto;
+        /*background-color: #c2c3c4;*/
+        /*background-color: #e3f2fd;*/
+        /*border-style: solid;*/
+        /*border-width: 2px;*/
+        /*border-color: black;*/
+        /*border-radius: 23px;*/
+       
+      }
+      .cnt-left {
+        margin-left: 1px !important;
+      }
+      .data-form {
+        
+        width: 380px;
+        margin-left: 20px;
+        
+      }
+      .add-data{
+        /*display: inline;*/
+      
+        margin-top: 4px;
+        
+      }
+      
+      .inputs {
+        width: 200px;
+        border-radius: 8px;
+      }
+      .selects {
+        width: 200px;
+        border-radius: 8px;
+        
+      }
+      .submit-button {
+        margin-top: 15px;
+        margin-left: 110px;
+        width: 180px;
+        
+        border-radius: 16px;
+        
+      }
+      
+      .params {
+        margin-bottom: 10px;
+        
+        text-align: left;
+      }
+      
+      .bez {
+        display: inline;
+      }
+      
+      
+      
+      hr {
+        background-color: black;
+        opacity: 0.6;
+        height: 0.5px;
+        border: none;
+        width: 1000px;
+        
+        margin: 0 auto;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        }
+      
+      .option {
+        color: red;
+      }  
+      
+      input.ng-touched.ng-invalid {border:solid red 2px;}  
+      input.ng-touched.ng-valid {border:solid green 2px;}
+      
+    `],
+    template: `<!--<h5 class="data-header">Изменение обучающей выборки</h5>-->
+    <!--<button *ngIf="!form_show" (click)="form_show=!form_show">Показать форму загрузки данных</button>-->
+    <!--<div *ngIf="form_show">-->
+    
+    
+    <div class="container">
+      <div class="row">
+        <div class="col-1"></div>
+        <div class="col-5">
+          <h5 class="add-header">Добавление данных</h5>
+          <form class="data-form" #myForm="ngForm">
+            <div class='add-data' *ngFor="let feature of features">
+              <div class="container">
+                <div class="row">
+                  <div class="col-6">
+                    
+                    <span class="ft-name">{{feature.feature_name}}</span>
+                  </div>
+                  <div class="col-6">
+                    <input class='inputs' *ngIf="feature.feature_type=='float'" [name]="feature.feature_name" [placeholder]="feature.feature_name" type="number" 
+                           [min]="feature.left_border" [max]="feature.right_border" ngModel required>
+                    <select class='selects' *ngIf="feature.feature_type=='boolean'" [name]="feature.feature_name" ngModel required>
+                      <option value="" disabled selected>{{feature.feature_name}}</option>
+                      <option *ngFor="let app_value of feature.appropriate_values" [ngValue]="app_value">
+                        {{app_value}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="add-data">
+              <div class="container">
+                <div class="row">
+                  <div class="col-6">
+                    <span class="ft-name">respiratory disease</span>
+                  </div>
+                  <div class="col-6">
+                    <select class='selects' name="respiratory_disease" ngModel required>
+                      <option value="" disabled selected>respiratory_disease</option>
+                      <option [ngValue]="0">
+                        0
+                      </option>
+                      <option [ngValue]="1">
+                        1
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <button class="submit-button" type="submit" (click)="submit(myForm)" [disabled]="myForm.invalid">Добавить </button>
+          </form>
+          
+        </div>
+        <div class="col-6">
+          
+          <h5 class="list-header">Список данных</h5>
+          
+          
+          <div class="data">
+            <ul>
+              <li *ngFor="let one of sample; index as i">
+                <span class="data-index">ЭКГ №{{i+1}}</span>
+                <button class="info-button" (click)="info(one)">Подробнее</button>
+                <button class="remove-button" (click)="remove(one, i)">Удалить</button>
+                <div class='params' *ngIf="one.isshown">
+                  <div *ngFor="let param of one | keyvalue">
+                    <div *ngIf="param.key!='isshown'">
+                      <b>{{param.key}}</b> : <i>{{param.value}}</i>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
-      </li>
-    </ul>`
+      </div>
+    </div>
+    
+    
+    
+    
+    <!--<div class="div-data-form">-->
+      <!--&lt;!&ndash;<button (click)="form_show=!form_show">Скрыть форму загрузки данных</button>&ndash;&gt;-->
+      <!--<form class="data-form" #myForm="ngForm">-->
+        <!--<div class='add-data' *ngFor="let feature of features">-->
+          <!---->
+          <!--<input class='inputs' *ngIf="feature.feature_type=='float'" [name]="feature.feature_name" [placeholder]="feature.feature_name" type="number" -->
+                 <!--[min]="feature.left_border" [max]="feature.right_border" ngModel required>-->
+          <!--<select class='selects' *ngIf="feature.feature_type=='boolean'" [name]="feature.feature_name" ngModel required>-->
+            <!--<option value="" disabled selected>{{feature.feature_name}}</option>-->
+            <!--<option *ngFor="let app_value of feature.appropriate_values" [ngValue]="app_value">-->
+              <!--{{app_value}}-->
+            <!--</option>-->
+          <!--</select>-->
+        <!--</div>-->
+            <!--<button class="submit-button" type="submit" (click)="submit(myForm)" [disabled]="myForm.invalid">Добавить </button>-->
+      <!--</form>-->
+      <!---->
+      <!--<hr>-->
+      <!---->
+      <!--<div class="data">-->
+      <!--<ul>-->
+        <!--<li *ngFor="let one of sample; index as i">-->
+          <!--<span class="data-index">Данные №{{i+1}}</span>-->
+          <!--<button class="info-button" (click)="info(one)">Подробнее</button>-->
+          <!--<button class="remove-button" (click)="remove(one, i)">Удалить</button>-->
+          <!--<div class='params' *ngIf="one.isshown">-->
+            <!--<div *ngFor="let param of one | keyvalue">-->
+              <!--<div *ngIf="param.key!='isshown'">-->
+                <!--<b>{{param.key}}</b> : <i>{{param.value}}</i>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</li>-->
+      <!--</ul>-->
+    <!--</div>-->
+      <!---->
+      <!---->
+    <!--</div>-->
+    
+    <!--<div class="data1">-->
+      <!--<ul>-->
+        <!--<li *ngFor="let one of sample; index as i">-->
+          <!--<span class="data-index1">Данные №{{i+1}}</span>-->
+          <!--<button class="remove-button1" (click)="remove(one, i)">Удалить</button>-->
+      <!---->
+            <!--<div class='params' *ngFor="let param of one | keyvalue">-->
+            <!---->
+                <!--<div *ngIf="param.key=='p_da'" class="per">-->
+                  <!--<b>{{param.key}}</b> : <i>{{param.value}}</i>-->
+                <!--</div>-->
+                <!--<div class="bez">-->
+                  <!--<b>{{param.key}}</b> : <i>{{param.value}}</i>-->
+                <!--</div>-->
+        <!---->
+            <!--</div>-->
+      <!---->
+        <!--</li>-->
+      <!--</ul>-->
+    <!--</div>-->
+    
+    <!--<div class="data">-->
+      <!--<ul>-->
+        <!--<li *ngFor="let one of sample; index as i">-->
+          <!--<span class="data-index">Данные №{{i+1}}</span>-->
+          <!--<button class="info-button" (click)="info(one)">Подробнее</button>-->
+          <!--<button class="remove-button" (click)="remove(one, i)">Удалить</button>-->
+          <!--<div class='params' *ngIf="one.isshown">-->
+            <!--<div *ngFor="let param of one | keyvalue">-->
+              <!--<div *ngIf="param.key!='isshown'">-->
+                <!--<b>{{param.key}}</b> : <i>{{param.value}}</i>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</li>-->
+      <!--</ul>-->
+    <!--</div>-->
+    `
 })
 export class AdminChangeDataComponent implements OnInit{
 
@@ -50,11 +308,11 @@ export class AdminChangeDataComponent implements OnInit{
   }
 
   ngOnInit(){
-    this.http.get('http://localhost:8080/system?command=get_fitting_data').subscribe(
-      (data:any) => this.sample=data['data']
-    );
     this.http.get('http://localhost:8080/system?command=get_features_template').subscribe(
       (data:any) => this.features=data['data']
+    );
+    this.http.get('http://localhost:8080/system?command=get_fitting_data').subscribe(
+      (data:any) => this.sample=data['data']
     );
   }
 

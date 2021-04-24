@@ -6,24 +6,150 @@ import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'admin-learn-model',
-    template: `<h3>Обучение новой модели</h3>
-    <button *ngFor="let type of types" (click)="show(type)">
-      {{type.display_name}}
-    </button>
+    styles: [
+      `
+        .data-header {
+          
+          text-align: center;
+          margin-bottom: 25px;
+          margin-top: 40px;
+        }
+        .div-type-buttons {
+          width: 1500px;
+          margin: 0 auto;
+          padding: 15px;
+          text-align: center;
+          /*background-color: #e3f2fd;*/
+          /*background-color: #c2c3c4;*/
+          border-radius: 23px;
+          
+        }
+        .type-button {
+          width: 250px;
+          height: 35px;
+          border-radius: 16px;
+          margin-top: 16px;
+          margin-left: 20px;
+          margin-right: 20px;
+          margin-bottom: 30px;
+       
+        }
+        .learn-model {
+          background-color: #e3f2fd;
+          border-radius: 23px;
+          padding-top: 20px;
+          padding-bottom: 14px;
+          margin: 0 auto;
+          width: 1500px;
+          margin-top: 50px;
+          text-align:center;
+        }
+        .params {
+          margin-left: 10px;
+          margin-top: 4px;
+        }
+        .inputs {
+          width: 220px;
+          border-radius: 8px;
+          text-align: center;
+          
+        }  
+        .inputs::placeholder {
+          text-align: center;
+        }  
+        .selects {
+          width: 220px;
+          border-radius: 8px;
+          text-align: center;
+          
+        }  
+        .submit-button {
+          border-radius: 16px;
+          width: 180px;
+          margin: 15px;
+        }
+        .active {
+          border-color: black;
+          border-style: solid;
+          border-width: 2px;
+        }
+        .ft-name {
+          float: left;
+        }
+        
+        input.ng-touched.ng-invalid {border:solid red 2px;}  
+        input.ng-touched.ng-valid {border:solid green 2px;}
+        
+     
+      `
+    ],
+    template: `<h5 class="data-header">Обучение новой модели</h5>
+    <div class="div-type-buttons">
+      <button class="type-button" *ngFor="let type of types" [class.active]="isActive(type)" (click)="show(type)">
+        {{type.display_name}}
+      </button>
+      
       <div *ngFor="let type of types">
         <div *ngIf="type.is_shown">
           <form #myForm="ngForm">
-            <div *ngFor="let parameter of type.parameters">
-              {{parameter.parameter_name}}
-              <input *ngIf="parameter.constraints.type=='Int'" [name]="parameter.parameter_name" type="number" 
+            <div class='params' *ngFor="let parameter of type.parameters">
+              
+              <div class="container">
+                <div class="row">
+                  <div class="col-4">
+                    
+                  </div>
+                  <div class="col-2">
+                    <span class="ft-name">{{parameter.display_name}}</span>
+                  </div>
+                  <div class="col-2">
+                    <input class="inputs" *ngIf="parameter.constraints.type=='Int'" [placeholder]="parameter.display_name" [name]="parameter.parameter_name" type="number" 
                      [min]="parameter.constraints.left_border" [max]="parameter.constraints.right_border" ngModel required>
-              <input *ngIf="parameter.constraints.type=='Boolean'" [name]="parameter.parameter_name" type="checkbox" 
-                     ngModel required>
+              <select class="selects" *ngIf="parameter.constraints.type=='Boolean'" [name]="parameter.parameter_name" ngModel required>
+                <option value="" disabled selected>{{parameter.display_name}}</option>
+                <option *ngFor="let app_value of [1, 2]" [ngValue]="app_value">
+                  {{app_value}}
+                </option>
+              </select>
+              <select class="selects" *ngIf="parameter.constraints.type=='string'" [name]="parameter.parameter_name" ngModel required>
+                <option value="" disabled selected>{{parameter.display_name}}</option>
+                <option *ngFor="let app_value of ['gini', 'entropy']" [ngValue]="app_value">
+                  {{app_value}}
+                </option>
+              </select>
+                  </div>
+                </div>
+              </div>
+              
+              
             </div>
-            <button type="submit" (click)="submit(type.model_type_id, myForm)" [disabled]="myForm.invalid">Отправить форму</button>
+            <button class='submit-button' type="submit" (click)="submit(type.model_type_id, myForm)" [disabled]="myForm.invalid">Обучить модель</button>
           </form>
         </div>
       </div>
+      
+   
+    </div>
+    
+    
+    <!--<div *ngFor="let type of types">-->
+     <!---->
+      <!--<div class="learn-model" *ngIf="type.is_shown">-->
+        <!--<form #myForm="ngForm">-->
+          <!--<div class='params' *ngFor="let parameter of type.parameters">-->
+            <!--<input class="inputs" *ngIf="parameter.constraints.type=='Int'" [placeholder]="parameter.parameter_name" [name]="parameter.parameter_name" type="number" -->
+                   <!--[min]="parameter.constraints.left_border" [max]="parameter.constraints.right_border" ngModel required>-->
+            <!--<select class="selects" *ngIf="parameter.constraints.type=='Boolean'" [name]="parameter.parameter_name" ngModel required>-->
+              <!--<option value="" disabled selected>{{parameter.parameter_name}}</option>-->
+              <!--<option *ngFor="let app_value of [1, 2]" [ngValue]="app_value">-->
+                <!--{{app_value}}-->
+              <!--</option>-->
+            <!--</select>-->
+          <!--</div>-->
+          <!--<button class='submit-button' type="submit" (click)="submit(type.model_type_id, myForm)" [disabled]="myForm.invalid">Обучить модель</button>-->
+        <!--</form>-->
+      <!--</div>-->
+    <!--</div>-->
       
 `
 })
@@ -35,6 +161,7 @@ export class AdminLearnModelComponent implements OnInit{
   b: number=3;
   a: Observable<number>;
   err_code2: number;
+  activeButton: any;
 
 
 
@@ -44,11 +171,16 @@ export class AdminLearnModelComponent implements OnInit{
 
   ngOnInit() {
     this.http.get('http://localhost:8080/system?command=get_model_types_template').subscribe(
-      (data:any) => this.types=data['data']
+      (data:any) => {
+        this.types=data['data'];
+        this.activeButton = this.types[0];
+        this.types[0].is_shown = true;
+      }
       );
   }
 
   show(type) {
+    this.activeButton = type
     for (var i = 0; i < this.types.length; i++) {
       if (this.types[i].model_type == type.model_type) {
         this.types[i].is_shown = true
@@ -58,6 +190,10 @@ export class AdminLearnModelComponent implements OnInit{
           this.types[i].is_shown = false
         }
     }
+  }
+
+  isActive(buttonName){
+    return this.activeButton === buttonName;
   }
 
   submit(type_id: string, form: NgForm) {
@@ -72,7 +208,7 @@ export class AdminLearnModelComponent implements OnInit{
           this.http.get('http://localhost:8080/system?command=get_last_fitted_model').subscribe((data2:any) => {
             this.err_code2 = data2['error_code'];
             console.log(this.err_code2)
-            if (this.err_code2!=612) {
+            if (this.err_code2!=613) {
               clearInterval(this.dt)
               if (this.err_code2==0) {
                 new alert('Модель обучена!')

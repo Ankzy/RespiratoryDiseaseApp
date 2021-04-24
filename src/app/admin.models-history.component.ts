@@ -4,39 +4,62 @@ import {Observable} from 'rxjs';
 
 @Component({
     selector: 'admin-models-history',
-    // styles: [`
-    //   .mdlname {display: inline-block;}
-    // `],
-    template: `<h3>История обучения моделей</h3>
-    <div>{{data}}</div>
-    <ul>
-      <li *ngFor="let model of models">
-        <p class='mdlname'>Модель {{model.id}}</p>
-        <button (click)="info(model)">Подробнее</button>
-        <div *ngIf="model.isshown">
-          <p>{{model.model_type_id}}</p>
-          <p>{{model.parameters}}</p>
-          <p>{{model.train_accuracy}}</p>
-          <p>{{model.train_recall}}</p>
-          <p>{{model.train_precision}}</p>
-          <p>{{model.train_f_score}}</p>
-          <p>{{model.test_accuracy}}</p>
-          <p>{{model.test_recall}}</p>
-          <p>{{model.test_precision}}</p>
-          <p>{{model.test_f_score}}</p>
-        </div>
-        <div *ngIf="model.isshown">
-          <div *ngFor="let param of model | keyvalue">
-            <b>{{param.key}}</b> : <b>{{param.value}}</b>
+    styles: [`
+      .data-header {
+        text-align: center;
+        margin-bottom: 25px;
+        margin-top: 40px;
+      }
+      .history-div {
+        width: 1500px;
+     
+        padding-top: 20px;
+        margin-left: 460px;
+        /*background-color: #e3f2fd;*/
+        border-radius: 23px;
+      }
+      .info-button {
+        margin-left: 420px;
+        width: 140px;
+        border-radius: 6px;
+      }
+      .data-index {
+        position: absolute;
+    
+      }
+      .params {
+        margin-bottom: 10px;
+        text-align: left;
+      }
+      
+   
+    `],
+    template: `<h5 class="data-header">История обучения моделей</h5>
+    <div class="history-div">
+      <ul>
+        <li *ngFor="let model of models; index as i">
+          <span class="data-index">{{model.display_name}} {{model.date}} (score {{model.test_f_score}})</span>
+          <button class="info-button" (click)="info(model)">Подробнее</button>
+          <div class="params" *ngIf="model.isshown">
+            <div *ngFor="let param of model | keyvalue">
+              <div *ngIf="param.key!='isshown' && param.key!='model_type_id' && param.key!='id' && param.key!='parameters'">
+                <b>{{param.key}}</b> : <i>{{param.value}}</i>
+              </div>
+              <!--<div *ngIf="param.key=='parameters'">-->
+                <!--<b>{{param.key}}</b> : <i>{{param.value}}</i>-->
+                <!---->
+              <!--</div>-->
+            </div>
           </div>
-        </div>
-      </li>
-    </ul>`
+        </li>
+      </ul>
+    </div>
+    `
 })
 export class AdminModelsHistoryComponent implements OnInit{
 
 
-  data: any;
+
   models: Model[]=[];
 
   info(model) {
@@ -51,7 +74,10 @@ export class AdminModelsHistoryComponent implements OnInit{
 
   ngOnInit(){
     this.http.get('http://localhost:8080/system?command=get_fitting_history').subscribe(
-      (data:any) => this.models=data['data']
+      (data:any) => {
+        this.models = data['data'];
+        console.log(this.models[0].parameters['max_depth'])
+      }
     );
   }
 }
@@ -69,6 +95,10 @@ export class Model {
   test_precision: number;
   test_f_score: number;
   date: string;
+}
+
+export class Params {
+  max_depth: number;
 }
 
 

@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {Injectable, NgModule} from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,6 +12,11 @@ import {AdminLearnModelComponent} from './admin.learn-model.component';
 import {AdminModelsHistoryComponent} from './admin.models-history.component';
 import {AdminSetModelComponent} from './admin.set-model.component';
 import {PredictStateComponent} from './predict-state.component';
+import {RegistrationComponent} from './registration.component';
+import {LoginComponent} from './login.component';
+import {Observable} from 'rxjs';
+
+
 
 
 const adminRoutes: Routes = [
@@ -23,12 +28,15 @@ const adminRoutes: Routes = [
 
 const appRoutes: Routes = [
   {path: 'admin', component: AdminComponent, children: adminRoutes},
-  {path: 'predict-state', component: PredictStateComponent}
+  {path: 'login', component: LoginComponent},
+  {path: 'registration', component: RegistrationComponent},
+  {path: '', component: PredictStateComponent}
 ];
 
 @NgModule({
   declarations: [AppComponent, AdminComponent, AdminChangeDataComponent, AdminLearnModelComponent,
-  AdminModelsHistoryComponent, AdminSetModelComponent, PredictStateComponent],
+  AdminModelsHistoryComponent, AdminSetModelComponent, PredictStateComponent,
+  LoginComponent, RegistrationComponent],
   imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, HttpClientModule,
     RouterModule.forRoot(appRoutes)],
   providers: [],
