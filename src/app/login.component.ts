@@ -16,7 +16,6 @@ import {HttpHeaders} from '../../node_modules/@angular/common/http';
       .admin-menu {
         margin-top: 15px;
         text-align: center;
-
       }
 
       .admin-links {
@@ -33,7 +32,6 @@ import {HttpHeaders} from '../../node_modules/@angular/common/http';
         border-color: black;
         text-decoration: none;
         margin-bottom: 30px;
-
       }
 
       .icons {
@@ -77,34 +75,81 @@ import {HttpHeaders} from '../../node_modules/@angular/common/http';
                 </div>
               </div>
             </div>
-            
-            
-       
           </div>
           <button class='submit-button' (click)="submit(myForm)" type="submit" [disabled]="myForm.invalid">Отправить форму</button>
         </form>
       </div>`
 })
+
+
+
 export class LoginComponent{
 
-
-  constructor(private http: HttpClient, private route: Router){
-
+  static readCookie(name: string): any {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
   }
 
-   submit(form: NgForm) {
+  constructor(private http: HttpClient, private route: Router){}
 
-    const body = {"command": "login", "args": form.value};
-    var headers = new HttpHeaders();
-    headers.append('Access-Control-Allow-Credentials', "true");
+  submit(form: NgForm) {
+    const body = {'command': 'login', 'args': form.value};
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      withCredentials: true,
+      observe: 'response' as 'response',
+      credentials: 'include',
+      responseType: 'json'
+    };
 
-    this.http.post('http://localhost:8080/login', body,{headers: headers, observe: 'response' as 'body', responseType: "json"}).subscribe((data:any) => {
+    this.http.post('http://localhost:8080/login', body, httpOptions).subscribe((data: any) => {
+      console.log(data);
       console.log(data.headers.keys());
       console.log(data.body['error_code']);
-      if (data.body['error_code']==0) {
+      console.log(document.cookie);
+      if (data.body['error_code'] == 0) {
+        const userLogin = LoginComponent.readCookie('user');
+        console.log(userLogin);
         this.route.navigate(['admin']);
       }
     });
-   }
 
+    // console.log(this.http.post('http://localhost:8080/login', body, httpOptions));
+
+    // if (data.body['error_code']==0) {
+    //   this.route.navigate(['admin']);
+    // }
+
+// public signinUser(user:UserSigninInfo):any{
+    // console.log('contacting server at '+this.API_URL +this.SIGNIN_USER_URL +" with user data "+user+ " with httpOptions "+httpOptions.withCredentials + ","+httpOptions.headers );
+
+    // let signinInfo = new UserSignin(user);
+    // let body = JSON.stringify(signinInfo);
+  //   return this.http.post(this.SIGNIN_USER_URL, body, httpOptions)
+  //     .catch(this.handleError);
+  // }
+
+
+
+
+    // let headers = new HttpHeaders();
+    // const myHeaders = new HttpHeaders().set('Authorization', 'my-auth-token');
+    // myHeaders.set("Access-Control-Allow-Credentials", "true");
+    //
+    // headers.append('Access-Control-Allow-Credentials', "true");
+    // this.http.post('http://localhost:8080/login', body,{headers: myHeaders, observe: 'response' as 'body', responseType: "json"}).subscribe((data:any) => {
+    //   console.log(data.headers.keys());
+    //   console.log(data.body['error_code']);
+    //   if (data.body['error_code']==0) {
+    //     this.route.navigate(['admin']);
+    //   }
+    // });
+
+  }
 }

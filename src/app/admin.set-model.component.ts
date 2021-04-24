@@ -80,8 +80,7 @@ export class AdminSetModelComponent implements OnInit{
     });
   }
 
-  constructor(private http: HttpClient){
-  }
+  constructor(private http: HttpClient){}
 
   ngOnInit(){
     this.http.get('http://localhost:8080/system?command=get_best_models_template').subscribe((data:any) => {
