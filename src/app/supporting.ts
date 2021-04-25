@@ -1,6 +1,8 @@
 export class SystemInfo{
-  static baseUrl = 'http://localhost:8080/';
-  static systemUrl = 'http://localhost:8080/system';
-  static loginUrl = 'http://localhost:8080/login';
-  static registrationUrl = 'http://localhost:8080/registration';
+  static domain = 'http://localhost';
+  static port = '8080';
+  static baseUrl = SystemInfo.domain + ':' + SystemInfo.port;
+  static systemUrl = SystemInfo.domain + ':' + SystemInfo.port + '/system';
+  static loginUrl = SystemInfo.domain + ':' + SystemInfo.port + '/login';
+  static registrationUrl = SystemInfo.domain + ':' + SystemInfo.port + '/registration';
 }
