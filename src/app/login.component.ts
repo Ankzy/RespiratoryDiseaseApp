@@ -82,19 +82,18 @@ import {HttpHeaders} from '../../node_modules/@angular/common/http';
 })
 
 
-
 export class LoginComponent{
 
-  static readCookie(name: string): any {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-    }
-    return null;
-  }
+  // static readCookie(name: string): any {
+  //   var nameEQ = name + "=";
+  //   var ca = document.cookie.split(';');
+  //   for(var i=0;i < ca.length; i++) {
+  //       var c = ca[i];
+  //       while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+  //       if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length,c.length);
+  //   }
+  //   return null;
+  // }
 
   constructor(private http: HttpClient, private route: Router){}
 
@@ -103,53 +102,14 @@ export class LoginComponent{
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       withCredentials: true,
-      observe: 'response' as 'response',
-      credentials: 'include',
-      responseType: 'json'
+      observe: 'response' as 'response'
     };
 
     this.http.post('http://localhost:8080/login', body, httpOptions).subscribe((data: any) => {
-      console.log(data);
-      console.log(data.headers.keys());
-      console.log(data.body['error_code']);
-      console.log(document.cookie);
-      if (data.body['error_code'] == 0) {
-        const userLogin = LoginComponent.readCookie('user');
-        console.log(userLogin);
+      if (data.body['error_code'] === 0) {
+        // const userLogin = LoginComponent.readCookie('user');
         this.route.navigate(['admin']);
       }
     });
-
-    // console.log(this.http.post('http://localhost:8080/login', body, httpOptions));
-
-    // if (data.body['error_code']==0) {
-    //   this.route.navigate(['admin']);
-    // }
-
-// public signinUser(user:UserSigninInfo):any{
-    // console.log('contacting server at '+this.API_URL +this.SIGNIN_USER_URL +" with user data "+user+ " with httpOptions "+httpOptions.withCredentials + ","+httpOptions.headers );
-
-    // let signinInfo = new UserSignin(user);
-    // let body = JSON.stringify(signinInfo);
-  //   return this.http.post(this.SIGNIN_USER_URL, body, httpOptions)
-  //     .catch(this.handleError);
-  // }
-
-
-
-
-    // let headers = new HttpHeaders();
-    // const myHeaders = new HttpHeaders().set('Authorization', 'my-auth-token');
-    // myHeaders.set("Access-Control-Allow-Credentials", "true");
-    //
-    // headers.append('Access-Control-Allow-Credentials', "true");
-    // this.http.post('http://localhost:8080/login', body,{headers: myHeaders, observe: 'response' as 'body', responseType: "json"}).subscribe((data:any) => {
-    //   console.log(data.headers.keys());
-    //   console.log(data.body['error_code']);
-    //   if (data.body['error_code']==0) {
-    //     this.route.navigate(['admin']);
-    //   }
-    // });
-
   }
 }

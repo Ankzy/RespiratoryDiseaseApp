@@ -59,33 +59,33 @@ import {HttpHeaders} from "../../node_modules/@angular/common/http";
 })
 export class AdminModelsHistoryComponent implements OnInit{
 
-  static readCookie(name: string): any {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-    }
-    return null;
-  }
+  // static readCookie(name: string): any {
+  //   var nameEQ = name + "=";
+  //   var ca = document.cookie.split(';');
+  //   for(var i=0;i < ca.length;i++) {
+  //       var c = ca[i];
+  //       while (c.charAt(0)==' ') c = c.substring(1,c.length);
+  //       if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+  //   }
+  //   return null;
+  // }
 
-  static setCookie(name, value, days) {
-    var expires = "";
-    if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
-}
+//   static setCookie(name, value, days) {
+//     var expires = "";
+//     if (days) {
+//         var date = new Date();
+//         date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+//         expires = "; expires=" + date.toUTCString();
+//     }
+//     document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+// }
 
   models: Model[]=[];
 
   info(model) {
     if (model.isshown != false && model.isshown != true) {model.isshown = true}
     else
-    {model.isshown = !model.isshown}
+    {model.isshown = !model.isshown; }
   }
 
   constructor(private http: HttpClient){
@@ -94,16 +94,6 @@ export class AdminModelsHistoryComponent implements OnInit{
 
   ngOnInit(){
 
-    const userLogin = AdminModelsHistoryComponent.readCookie('user');
-    console.log('History: ' + userLogin);
-    console.log('COK' + document.cookie);
-
-    // let headers = new HttpHeaders();
-    // headers.append('user', userLogin);
-    //
-    // const httpOptions = {
-    //   headers: headers
-    // };
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       withCredentials: true
@@ -113,8 +103,7 @@ export class AdminModelsHistoryComponent implements OnInit{
     this.http.get('http://localhost:8080/system?command=get_fitting_history', httpOptions).subscribe(
       (data:any) => {
         this.models = data['data'];
-      }
-    );
+      });
   }
 }
 

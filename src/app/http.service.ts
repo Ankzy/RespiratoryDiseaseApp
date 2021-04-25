@@ -1,21 +1,42 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {HttpHeaders} from "../../node_modules/@angular/common/http";
 
 @Injectable()
 export class HttpService{
 
-    constructor(private http: HttpClient){ }
+  constructor(private http: HttpClient){}
 
-    // getSum(request: string){
-    //     return this.http.get('http://localhost:8080/system?command=' + request);
-    // }
+  public postRequest(url: string, body: any): any{
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      withCredentials: true,
+      observe: 'response' as 'response'
+    };
 
-  b: any;
+    this.http.post(url, body, httpOptions).subscribe((data: any) => {
+      return data;
+    });
+  }
 
-      getSum(request: string){
+  public getRequest(url: string, body: any): any{
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      withCredentials: true
+    };
 
-      if (request=='get_best_models_template') {this.b = this.http.get('http://localhost:8080/system?command=' + request)};
+    this.http.get('http://localhost:8080/system?command=get_fitting_history', httpOptions).subscribe(
+      (data:any) => {
+        return data;
+      });
+  }
 
-      return this.b
-    }
+  // b: any;
+  //
+  //     getSum(request: string){
+  //
+  //     if (request=='get_best_models_template') {this.b = this.http.get('http://localhost:8080/system?command=' + request)};
+  //
+  //     return this.b
+  //   }
 }
