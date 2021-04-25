@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {NgForm} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { HttpService } from './http.service';
+import { SystemInfo } from './supporting';
 
 @Component({
     selector: 'admin-change-data',
@@ -10,15 +11,12 @@ import {NgForm} from '@angular/forms';
         margin-left: 135px;
         margin-bottom: 20px;
         margin-top: 20px;
-        
       }
       .list-header {
-        
         text-align: center;
         margin-right: 40px;
         margin-bottom: 20px;
         margin-top: 20px;
-        
       }
       .data-header {
         margin-left: 608px;
@@ -29,16 +27,11 @@ import {NgForm} from '@angular/forms';
         /*background-color: #e3f2fd;*/
         margin-left: 60px;
         border-radius: 23px;
-       
         padding-bottom: 14px;
-        
-        
         margin-bottom: 14px;
-        
       }
       .data-index {
         position: absolute;
-        
       }
       .info-button {
         margin-left: 120px;
@@ -48,7 +41,6 @@ import {NgForm} from '@angular/forms';
       .remove-button {
         width: 150px;
         border-radius: 6px;
-      
       }
       .div-data-form {
         padding-left: 7px;
@@ -64,22 +56,17 @@ import {NgForm} from '@angular/forms';
         /*border-width: 2px;*/
         /*border-color: black;*/
         /*border-radius: 23px;*/
-       
       }
       .cnt-left {
         margin-left: 1px !important;
       }
       .data-form {
-        
         width: 380px;
         margin-left: 20px;
-        
       }
       .add-data{
         /*display: inline;*/
-      
         margin-top: 4px;
-        
       }
       
       .inputs {
@@ -110,15 +97,12 @@ import {NgForm} from '@angular/forms';
         display: inline;
       }
       
-      
-      
       hr {
         background-color: black;
         opacity: 0.6;
         height: 0.5px;
         border: none;
         width: 1000px;
-        
         margin: 0 auto;
         margin-top: 30px;
         margin-bottom: 30px;
@@ -130,13 +114,10 @@ import {NgForm} from '@angular/forms';
       
       input.ng-touched.ng-invalid {border:solid red 2px;}  
       input.ng-touched.ng-valid {border:solid green 2px;}
-      
     `],
     template: `<!--<h5 class="data-header">Изменение обучающей выборки</h5>-->
     <!--<button *ngIf="!form_show" (click)="form_show=!form_show">Показать форму загрузки данных</button>-->
     <!--<div *ngIf="form_show">-->
-    
-    
     <div class="container">
       <div class="row">
         <div class="col-1"></div>
@@ -147,7 +128,6 @@ import {NgForm} from '@angular/forms';
               <div class="container">
                 <div class="row">
                   <div class="col-6">
-                    
                     <span class="ft-name">{{feature.feature_name}}</span>
                   </div>
                   <div class="col-6">
@@ -183,16 +163,11 @@ import {NgForm} from '@angular/forms';
                 </div>
               </div>
             </div>
-            
             <button class="submit-button" type="submit" (click)="submit(myForm)" [disabled]="myForm.invalid">Добавить </button>
           </form>
-          
         </div>
         <div class="col-6">
-          
           <h5 class="list-header">Список данных</h5>
-          
-          
           <div class="data">
             <ul>
               <li *ngFor="let one of sample; index as i">
@@ -212,142 +187,55 @@ import {NgForm} from '@angular/forms';
         </div>
       </div>
     </div>
-    
-    
-    
-    
-    <!--<div class="div-data-form">-->
-      <!--&lt;!&ndash;<button (click)="form_show=!form_show">Скрыть форму загрузки данных</button>&ndash;&gt;-->
-      <!--<form class="data-form" #myForm="ngForm">-->
-        <!--<div class='add-data' *ngFor="let feature of features">-->
-          <!---->
-          <!--<input class='inputs' *ngIf="feature.feature_type=='float'" [name]="feature.feature_name" [placeholder]="feature.feature_name" type="number" -->
-                 <!--[min]="feature.left_border" [max]="feature.right_border" ngModel required>-->
-          <!--<select class='selects' *ngIf="feature.feature_type=='boolean'" [name]="feature.feature_name" ngModel required>-->
-            <!--<option value="" disabled selected>{{feature.feature_name}}</option>-->
-            <!--<option *ngFor="let app_value of feature.appropriate_values" [ngValue]="app_value">-->
-              <!--{{app_value}}-->
-            <!--</option>-->
-          <!--</select>-->
-        <!--</div>-->
-            <!--<button class="submit-button" type="submit" (click)="submit(myForm)" [disabled]="myForm.invalid">Добавить </button>-->
-      <!--</form>-->
-      <!---->
-      <!--<hr>-->
-      <!---->
-      <!--<div class="data">-->
-      <!--<ul>-->
-        <!--<li *ngFor="let one of sample; index as i">-->
-          <!--<span class="data-index">Данные №{{i+1}}</span>-->
-          <!--<button class="info-button" (click)="info(one)">Подробнее</button>-->
-          <!--<button class="remove-button" (click)="remove(one, i)">Удалить</button>-->
-          <!--<div class='params' *ngIf="one.isshown">-->
-            <!--<div *ngFor="let param of one | keyvalue">-->
-              <!--<div *ngIf="param.key!='isshown'">-->
-                <!--<b>{{param.key}}</b> : <i>{{param.value}}</i>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</li>-->
-      <!--</ul>-->
-    <!--</div>-->
-      <!---->
-      <!---->
-    <!--</div>-->
-    
-    <!--<div class="data1">-->
-      <!--<ul>-->
-        <!--<li *ngFor="let one of sample; index as i">-->
-          <!--<span class="data-index1">Данные №{{i+1}}</span>-->
-          <!--<button class="remove-button1" (click)="remove(one, i)">Удалить</button>-->
-      <!---->
-            <!--<div class='params' *ngFor="let param of one | keyvalue">-->
-            <!---->
-                <!--<div *ngIf="param.key=='p_da'" class="per">-->
-                  <!--<b>{{param.key}}</b> : <i>{{param.value}}</i>-->
-                <!--</div>-->
-                <!--<div class="bez">-->
-                  <!--<b>{{param.key}}</b> : <i>{{param.value}}</i>-->
-                <!--</div>-->
-        <!---->
-            <!--</div>-->
-      <!---->
-        <!--</li>-->
-      <!--</ul>-->
-    <!--</div>-->
-    
-    <!--<div class="data">-->
-      <!--<ul>-->
-        <!--<li *ngFor="let one of sample; index as i">-->
-          <!--<span class="data-index">Данные №{{i+1}}</span>-->
-          <!--<button class="info-button" (click)="info(one)">Подробнее</button>-->
-          <!--<button class="remove-button" (click)="remove(one, i)">Удалить</button>-->
-          <!--<div class='params' *ngIf="one.isshown">-->
-            <!--<div *ngFor="let param of one | keyvalue">-->
-              <!--<div *ngIf="param.key!='isshown'">-->
-                <!--<b>{{param.key}}</b> : <i>{{param.value}}</i>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</li>-->
-      <!--</ul>-->
-    <!--</div>-->
-    `
+    `,
+  providers: [HttpService]
 })
+
 export class AdminChangeDataComponent implements OnInit{
 
-  sample: Data[]=[];
-  features: Params[]=[];
-  form_show: boolean=false;
+  sample: Data[] = [];
+  features: Params[] = [];
+  form_show: boolean = false;
   err_code: number;
   err_code2: number;
 
+  constructor(private httpService: HttpService){}
 
-  constructor(private http: HttpClient){
-
-  }
-
-  ngOnInit(){
-    this.http.get('http://localhost:8080/system?command=get_features_template').subscribe(
-      (data:any) => this.features=data['data']
+  ngOnInit(): any{
+    this.httpService.getRequest(SystemInfo.systemUrl + '?command=get_features_template').subscribe(
+      (data: any) => this.features = data['data']
     );
-    this.http.get('http://localhost:8080/system?command=get_fitting_data').subscribe(
-      (data:any) => this.sample=data['data']
+    this.httpService.getRequest(SystemInfo.systemUrl + '?command=get_fitting_data').subscribe(
+      (data: any) => this.sample = data['data']
     );
   }
 
-  info(model) {
-    if (model.isshown != false && model.isshown != true) {model.isshown = true}
-    else {model.isshown = !model.isshown}
+  info(model): any{
+    if (model.isshown !== false && model.isshown !== true) { model.isshown = true; }
+    else { model.isshown = !model.isshown; }
   }
 
-  remove(model, i) {
-    if(confirm('Are you want to delete item ' + model.row_id + '?')){
-      const body = {'command': 'remove_fitting_data', 'args': {'row_ids': [model.row_id]}};
-      this.http.post('http://127.0.0.1:8080/', body).subscribe((data: any) => {
-        this.err_code=data['error_code'];
-        if (this.err_code == 0) {
-          new alert("Данные удалены");
+  remove(model, i): any{
+    if (confirm('Are you want to delete item ' + model.row_id + '?')){
+      const body = {command: 'remove_fitting_data', args: {row_ids: [model.row_id]}};
+      this.httpService.postRequest(SystemInfo.baseUrl, body).subscribe((data: any) => {
+        this.err_code = data.body['error_code'];
+        if (this.err_code === 0) {
+          alert('Данные удалены');
           this.sample.splice(i, 1);
         }
-        else {new alert("Ошибка! Данные не удалось удалить.")}
-      }
-      );
+        else { alert('Ошибка! Данные не удалось удалить.'); }
+      });
     }
   }
 
-  submit(form: NgForm) {
-    const body = {"command": "add_fitting_data", "args": {"rows": [form.value]}};
-    console.log(body)
-    this.http.post('http://localhost:8080/system', body).subscribe((data:any) => {
-      this.err_code2=data['error_code'];
-      if (this.err_code2 == 0) {
-        new alert('Данные добавлены.')
-      }
-      else
-        {
-          new alert('Ошибка добавления данных')
-        }
+  submit(form: NgForm): any{
+    const body = {command: 'add_fitting_data', args: {rows: [form.value]}};
+    console.log(body);
+    this.httpService.postRequest(SystemInfo.systemUrl, body).subscribe((data: any) => {
+      this.err_code2 = data.body['error_code'];
+      if (this.err_code2 === 0) { alert('Данные добавлены.'); }
+      else { alert('Ошибка добавления данных'); }
     });
   }
 }
@@ -377,7 +265,6 @@ export class Params {
   right_border:	number;
   feature_type:	string;
 }
-
 
 export class Params2 {
   feature_id:	string;

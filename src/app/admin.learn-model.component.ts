@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {NgForm} from '@angular/forms';
-import {Observable} from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { HttpService } from './http.service';
+import { SystemInfo } from './supporting';
 
 @Component({
     selector: 'admin-learn-model',
@@ -151,87 +151,80 @@ import { map } from 'rxjs/operators';
       <!--</div>-->
     <!--</div>-->
       
-`
+`,
+  providers: [HttpService]
 })
+
 export class AdminLearnModelComponent implements OnInit{
 
-  types: ModelType[]=[];
+  types: ModelType[] = [];
   dt: any;
   err_code: number;
-  b: number=3;
+  b: number = 3;
   a: Observable<number>;
   err_code2: number;
   activeButton: any;
 
 
 
-  constructor(private http: HttpClient) {
+  constructor(private httpService: HttpService) {}
 
-  }
-
-  ngOnInit() {
-    this.http.get('http://localhost:8080/system?command=get_model_types_template').subscribe(
-      (data:any) => {
-        this.types=data['data'];
+  ngOnInit(): any {
+    this.httpService.getRequest('http://localhost:8080/system?command=get_model_types_template').subscribe(
+      (data: any) => {
+        this.types = data['data'];
         this.activeButton = this.types[0];
         this.types[0].is_shown = true;
       }
       );
   }
 
-  show(type) {
-    this.activeButton = type
-    for (var i = 0; i < this.types.length; i++) {
-      if (this.types[i].model_type == type.model_type) {
-        this.types[i].is_shown = true
+  show(type): any {
+    this.activeButton = type;
+    for (let i = 0; i < this.types.length; i++) {
+      if (this.types[i].model_type === type.model_type) {
+        this.types[i].is_shown = true;
       }
       else
         {
-          this.types[i].is_shown = false
+          this.types[i].is_shown = false;
         }
     }
   }
 
-  isActive(buttonName){
+  isActive(buttonName): any {
     return this.activeButton === buttonName;
   }
 
   submit(type_id: string, form: NgForm) {
-    const body = {'command': 'fit_model', 'args': {'model_type_id': type_id, 'model_params': form.value}};
-    this.http.post('http://localhost:8080/system', body).subscribe((data:any) => {
-      this.err_code=data['error_code'];
-      if (this.err_code == 0) {
-
+    const body = {command: 'fit_model', args: {model_type_id: type_id, model_params: form.value}};
+    this.httpService.postRequest(SystemInfo.systemUrl, body).subscribe((data: any ) => {
+      this.err_code = data.body['error_code'];
+      if (this.err_code === 0) {
         this.err_code2 = null;
         this.dt = setInterval(() => {
-
-          this.http.get('http://localhost:8080/system?command=get_last_fitted_model').subscribe((data2:any) => {
+          this.httpService.getRequest(SystemInfo.systemUrl + '?command=get_last_fitted_model').subscribe((data2: any) => {
             this.err_code2 = data2['error_code'];
-            console.log(this.err_code2)
-            if (this.err_code2!=613) {
-              clearInterval(this.dt)
-              if (this.err_code2==0) {
-                new alert('Модель обучена!')
+            console.log(this.err_code2);
+            if (this.err_code2 !== 613) {
+              clearInterval(this.dt);
+              if (this.err_code2 === 0) {
+                alert('Модель обучена!');
               }
               else {
-                new alert('Ошибка во время обучения модели')
+                alert('Ошибка во время обучения модели');
               }
             }
-            })
-
-
-        }, 1000)
-
+            });
+        }, 1000);
       }
       else
         {
-          new alert('Ошибка обучения модели (неверные данные)')
+          alert('Ошибка обучения модели (неверные данные)');
         }
 
     });
   }
-
-
 }
 
 

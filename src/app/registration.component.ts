@@ -1,7 +1,7 @@
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { NgForm} from '@angular/forms';
-import {HttpClient} from '../../node_modules/@angular/common/http';
-
+import { HttpService } from './http.service';
+import { SystemInfo } from './supporting';
 
 @Component({
     selector: 'registration',
@@ -67,28 +67,22 @@ import {HttpClient} from '../../node_modules/@angular/common/http';
                 </div>
               </div>
             </div>
-            
-            
-       
           </div>
           <button class='submit-button' (click)="submit(myForm)" type="submit" [disabled]="myForm.invalid">Отправить форму</button>
         </form>
-      </div>`
+      </div>`,
+  providers: [HttpService]
 })
+
 export class RegistrationComponent{
 
+  constructor(private httpService: HttpService){}
 
-  constructor(private http: HttpClient){
-
-  }
-
-   submit(form: NgForm) {
-
-    const body = {"command": "register", "args": form.value};
-    console.log(body);
-    this.http.post('http://localhost:8080/registration', body).subscribe((data:any) => {
-      console.log(data['error_code'])
+  submit(form: NgForm): any{
+    const body = {command: 'register', args: form.value};
+    this.httpService.postRequest(SystemInfo.registrationUrl, body).subscribe((data: any) => {
+      console.log(data.body['error_code']);
     });
-   }
+  }
 
 }

@@ -1,9 +1,8 @@
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { NgForm} from '@angular/forms';
-import {HttpClient, HttpRequest} from '../../node_modules/@angular/common/http';
-import {Router} from '@angular/router';
-import {HttpHeaders} from '../../node_modules/@angular/common/http';
-
+import { Router } from '@angular/router';
+import { HttpService } from './http.service';
+import { SystemInfo } from './supporting';
 
 @Component({
     selector: 'login',
@@ -78,36 +77,21 @@ import {HttpHeaders} from '../../node_modules/@angular/common/http';
           </div>
           <button class='submit-button' (click)="submit(myForm)" type="submit" [disabled]="myForm.invalid">Отправить форму</button>
         </form>
-      </div>`
+      </div>`,
+  providers: [HttpService]
 })
 
 
 export class LoginComponent{
 
-  // static readCookie(name: string): any {
-  //   var nameEQ = name + "=";
-  //   var ca = document.cookie.split(';');
-  //   for(var i=0;i < ca.length; i++) {
-  //       var c = ca[i];
-  //       while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-  //       if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length,c.length);
-  //   }
-  //   return null;
-  // }
+  constructor(private httpService: HttpService, private route: Router){}
 
-  constructor(private http: HttpClient, private route: Router){}
+  submit(form: NgForm): any {
 
-  submit(form: NgForm) {
-    const body = {'command': 'login', 'args': form.value};
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      withCredentials: true,
-      observe: 'response' as 'response'
-    };
+    const requestBody = {command: 'login', args: form.value};
 
-    this.http.post('http://localhost:8080/login', body, httpOptions).subscribe((data: any) => {
+    this.httpService.postRequest(SystemInfo.loginUrl, requestBody).subscribe((data: any) => {
       if (data.body['error_code'] === 0) {
-        // const userLogin = LoginComponent.readCookie('user');
         this.route.navigate(['admin']);
       }
     });

@@ -1,7 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {HttpHeaders} from "../../node_modules/@angular/common/http";
+import { Component, OnInit } from '@angular/core';
+import { HttpService } from './http.service';
+import { SystemInfo } from './supporting';
 
 @Component({
     selector: 'admin-models-history',
@@ -55,52 +54,22 @@ import {HttpHeaders} from "../../node_modules/@angular/common/http";
         </li>
       </ul>
     </div>
-    `
+    `,
+  providers: [HttpService]
 })
 export class AdminModelsHistoryComponent implements OnInit{
 
-  // static readCookie(name: string): any {
-  //   var nameEQ = name + "=";
-  //   var ca = document.cookie.split(';');
-  //   for(var i=0;i < ca.length;i++) {
-  //       var c = ca[i];
-  //       while (c.charAt(0)==' ') c = c.substring(1,c.length);
-  //       if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-  //   }
-  //   return null;
-  // }
+  models: Model[] = [];
 
-//   static setCookie(name, value, days) {
-//     var expires = "";
-//     if (days) {
-//         var date = new Date();
-//         date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-//         expires = "; expires=" + date.toUTCString();
-//     }
-//     document.cookie = name + "=" + (value || "")  + expires + "; path=/";
-// }
-
-  models: Model[]=[];
-
-  info(model) {
-    if (model.isshown != false && model.isshown != true) {model.isshown = true}
-    else
-    {model.isshown = !model.isshown; }
+  info(model): any{
+    if (model.isshown !== false && model.isshown !== true) { model.isshown = true; }
+    else { model.isshown = !model.isshown; }
   }
 
-  constructor(private http: HttpClient){
+  constructor(private httpService: HttpService){}
 
-  }
-
-  ngOnInit(){
-
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      withCredentials: true
-    };
-
-
-    this.http.get('http://localhost:8080/system?command=get_fitting_history', httpOptions).subscribe(
+  ngOnInit(): any {
+    this.httpService.getRequest(SystemInfo.systemUrl + '?command=get_fitting_history').subscribe(
       (data:any) => {
         this.models = data['data'];
       });
