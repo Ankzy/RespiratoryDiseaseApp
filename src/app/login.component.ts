@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { NgForm} from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpService } from './http.service';
 import { SystemInfo } from './supporting';
+import { CookieManager } from './supporting';
 
 @Component({
     selector: 'login',
@@ -82,9 +83,13 @@ import { SystemInfo } from './supporting';
 })
 
 
-export class LoginComponent{
+export class LoginComponent implements OnInit{
 
   constructor(private httpService: HttpService, private route: Router){}
+
+  ngOnInit(): any{
+    CookieManager.deleteCookie('user');
+  }
 
   submit(form: NgForm): any {
 

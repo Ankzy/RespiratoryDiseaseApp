@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { HttpService } from './http.service';
 import { SystemInfo } from './supporting';
+import { CookieManager } from './supporting';
+import { Router } from '@angular/router';
+
 
 @Component({
     selector: 'admin-change-data',
@@ -199,15 +202,18 @@ export class AdminChangeDataComponent implements OnInit{
   err_code: number;
   err_code2: number;
 
-  constructor(private httpService: HttpService){}
+  constructor(private httpService: HttpService, private route: Router){}
 
   ngOnInit(): any{
-    this.httpService.getRequest(SystemInfo.systemUrl + '?command=get_features_template').subscribe(
-      (data: any) => this.features = data['data']
-    );
-    this.httpService.getRequest(SystemInfo.systemUrl + '?command=get_fitting_data').subscribe(
-      (data: any) => this.sample = data['data']
-    );
+    if (CookieManager.getCookie('user') !== '') {
+      this.httpService.getRequest(SystemInfo.systemUrl + '?command=get_features_template').subscribe(
+        (data: any) => this.features = data['data']);
+      this.httpService.getRequest(SystemInfo.systemUrl + '?command=get_fitting_data').subscribe(
+        (data: any) => this.sample = data['data']);
+    }
+    else {
+      this.route.navigate(['login']);
+    }
   }
 
   info(model): any{

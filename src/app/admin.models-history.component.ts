@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from './http.service';
-import { SystemInfo } from './supporting';
+import {CookieManager, SystemInfo} from './supporting';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'admin-models-history',
@@ -66,13 +67,18 @@ export class AdminModelsHistoryComponent implements OnInit{
     else { model.isshown = !model.isshown; }
   }
 
-  constructor(private httpService: HttpService){}
+  constructor(private httpService: HttpService, private route: Router){}
 
   ngOnInit(): any {
-    this.httpService.getRequest(SystemInfo.systemUrl + '?command=get_fitting_history').subscribe(
-      (data:any) => {
-        this.models = data['data'];
-      });
+    if (CookieManager.getCookie('user') !== '') {
+      this.httpService.getRequest(SystemInfo.systemUrl + '?command=get_fitting_history').subscribe(
+        (data: any) => {
+          this.models = data['data'];
+        });
+    }
+    else{
+      this.route.navigate(['login']);
+    }
   }
 }
 

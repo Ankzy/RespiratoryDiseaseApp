@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from './http.service';
-import { SystemInfo } from './supporting';
+import {CookieManager, SystemInfo} from './supporting';
+import { Router } from '@angular/router';
+
 
 @Component({
     selector: 'admin-set-model',
@@ -79,20 +81,25 @@ export class AdminSetModelComponent implements OnInit{
     });
   }
 
-  constructor(private httpService: HttpService){}
+  constructor(private httpService: HttpService, private route: Router){}
 
   ngOnInit(): any{
-    this.httpService.getRequest(SystemInfo.systemUrl + '?command=get_best_models_template').subscribe((data: any) => {
-      this.models = data['data'];
-      this.httpService.getRequest(SystemInfo.systemUrl + '?command=get_working_model').subscribe((data: any) => {
-      this.work = data['data']['model_type_id'];
-        for (let i = 0; i < this.models.length; i++) {
-          if (this.models[i].model_type_id === this.work) {
-            this.models[i].working = true;
+    if (CookieManager.getCookie('user') !== '') {
+      this.httpService.getRequest(SystemInfo.systemUrl + '?command=get_best_models_template').subscribe((data: any) => {
+        this.models = data['data'];
+        this.httpService.getRequest(SystemInfo.systemUrl + '?command=get_working_model').subscribe((data: any) => {
+          this.work = data['data']['model_type_id'];
+          for (let i = 0; i < this.models.length; i++) {
+            if (this.models[i].model_type_id === this.work) {
+              this.models[i].working = true;
+            }
           }
-        }
+        });
       });
-    });
+    }
+    else {
+      this.route.navigate(['login']);
+    }
   }
 }
 

@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Subject} from 'rxjs';
 import {NgForm} from '@angular/forms';
+import {HttpService} from './http.service';
+import {Router} from '@angular/router';
+import {CookieManager} from './supporting';
+
 
 @Component({
     selector: 'predict-state',
@@ -87,42 +89,43 @@ import {NgForm} from '@angular/forms';
           <button class='submit-button' type="submit" (click)="submit(myForm)" [disabled]="myForm.invalid">Отправить форму</button>
         </form>
       </div>
-    `
+    `,
+  providers: [HttpService]
 })
+
 export class PredictStateComponent implements OnInit{
 
-  features: Params[]=[];
+  features: Params[] = [];
   working_model: string;
 
+  constructor(private httpService: HttpService, private route: Router){}
 
-
-  constructor(private http: HttpClient){
-
-  }
-
-
-
-  ngOnInit(){
-    this.http.get('http://localhost:8080/system?command=get_features_template').subscribe(
-      (data:any) => this.features=data['data']
-    );
-    this.http.get('http://localhost:8080/system?command=get_working_model').subscribe(
-      (data:any) => this.working_model=data['data']['display_name']
-    );
+  ngOnInit(): any{
+    if (CookieManager.getCookie('user') !== '') {
+      this.httpService.getRequest('http://localhost:8080/system?command=get_features_template').subscribe(
+        (data: any) => this.features = data['data']
+      );
+      this.httpService.getRequest('http://localhost:8080/system?command=get_working_model').subscribe(
+        (data: any) => this.working_model = data['data']['display_name']
+      );
+    }
+    else{
+      this.route.navigate(['login']);
+    }
   }
 
   submit(form: NgForm) {
-    const body = {"command": "predict_state", "args": {"data": form.value}};
+    const body = {command: 'predict_state', args: {data: form.value}};
     console.log(body);
-    this.http.post('http://localhost:8080/system', body).subscribe((data:any) => {
-      if (data['error_code'] == 0) {
-        if (data.data == 0) {new alert('Рекомендуется более глубокое обследование!')}
-        if (data.data == 1) {new alert('Признаки респираторных заболеваний не обнаружены.')}
+    this.httpService.postRequest('http://localhost:8080/system', body).subscribe((data: any) => {
+      if (data.body['error_code'] === 0) {
+        if (data.body.data === 0) { alert('Рекомендуется более глубокое обследование!'); }
+        if (data.body.data === 1) { alert('Признаки респираторных заболеваний не обнаружены.'); }
       }
       else
         {
-          console.log(JSON.stringify(data))
-          new alert('Нет результата')
+          console.log(JSON.stringify(data));
+          alert('Нет результата');
         }
     });
   }

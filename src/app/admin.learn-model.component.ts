@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { HttpService } from './http.service';
-import { SystemInfo } from './supporting';
+import {CookieManager, SystemInfo} from './supporting';
+import { Router } from '@angular/router';
+
 
 @Component({
     selector: 'admin-learn-model',
@@ -165,18 +167,20 @@ export class AdminLearnModelComponent implements OnInit{
   err_code2: number;
   activeButton: any;
 
-
-
-  constructor(private httpService: HttpService) {}
+  constructor(private httpService: HttpService, private route: Router) {}
 
   ngOnInit(): any {
-    this.httpService.getRequest('http://localhost:8080/system?command=get_model_types_template').subscribe(
-      (data: any) => {
-        this.types = data['data'];
-        this.activeButton = this.types[0];
-        this.types[0].is_shown = true;
-      }
-      );
+    if (CookieManager.getCookie('user') !== '') {
+      this.httpService.getRequest('http://localhost:8080/system?command=get_model_types_template').subscribe(
+        (data: any) => {
+          this.types = data['data'];
+          this.activeButton = this.types[0];
+          this.types[0].is_shown = true;
+        });
+    }
+    else {
+      this.route.navigate(['login']);
+    }
   }
 
   show(type): any {
