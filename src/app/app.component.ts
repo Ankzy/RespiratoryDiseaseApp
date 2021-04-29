@@ -45,10 +45,10 @@ import {Router} from '@angular/router';
                 <div class="col-2">
                   <ul class="navbar-nav mr-auto rightnav">
                     <li class="nav-item">
-                      <a *ngIf="router.url!=='/'" class="nav-link" routerLink="">Predict state</a>
+                      <a *ngIf="router.url!=='/'" class="nav-link" routerLink="">Пациент</a>
                     </li>
                     <li class="nav-item">
-                      <a *ngIf="router.url==='/'" class="nav-link" routerLink="/admin">Administration</a>
+                      <a *ngIf="router.url==='/'" class="nav-link" routerLink="/admin">Администратор</a>
                     </li>
                   </ul>
                 </div>

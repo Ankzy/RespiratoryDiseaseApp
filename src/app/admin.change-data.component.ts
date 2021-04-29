@@ -136,10 +136,37 @@ import { Router } from '@angular/router';
                   <div class="col-6">
                     <input class='inputs' *ngIf="feature.feature_type=='float'" [name]="feature.feature_name" [placeholder]="feature.feature_name" type="number" 
                            [min]="feature.left_border" [max]="feature.right_border" ngModel required>
-                    <select class='selects' *ngIf="feature.feature_type=='boolean'" [name]="feature.feature_name" ngModel required>
+                    <!--<select class='selects' *ngIf="feature.feature_type=='boolean'" [name]="feature.feature_name" ngModel required>-->
+                      <!--<option value="" disabled selected>{{feature.feature_name}}</option>-->
+                      <!--<option *ngFor="let app_value of feature.appropriate_values" [ngValue]="app_value">-->
+                        <!--{{app_value}}-->
+                      <!--</option>-->
+                    <!--</select>-->
+                    <select class='selects' *ngIf="feature.feature_name=='gender'" [name]="feature.feature_name" ngModel required>
                       <option value="" disabled selected>{{feature.feature_name}}</option>
-                      <option *ngFor="let app_value of feature.appropriate_values" [ngValue]="app_value">
-                        {{app_value}}
+                      <option [ngValue]="0">
+                        Женский
+                      </option>
+                      <option [ngValue]="1">
+                        Мужской
+                      </option>
+                    </select>
+                    <select class='selects' *ngIf="feature.feature_name=='smoking'" [name]="feature.feature_name" ngModel required>
+                      <option value="" disabled selected>{{feature.feature_name}}</option>
+                      <option [ngValue]="0">
+                        Некурящий
+                      </option>
+                      <option [ngValue]="1">
+                        Курящий
+                      </option>
+                    </select>
+                    <select class='selects' *ngIf="feature.feature_name=='diseasehypertonia'" [name]="feature.feature_name" ngModel required>
+                      <option value="" disabled selected>{{feature.feature_name}}</option>
+                      <option [ngValue]="0">
+                        Отсутствует
+                      </option>
+                      <option [ngValue]="1">
+                        Присутствует
                       </option>
                     </select>
                   </div>
@@ -156,10 +183,10 @@ import { Router } from '@angular/router';
                     <select class='selects' name="respiratory_disease" ngModel required>
                       <option value="" disabled selected>respiratory_disease</option>
                       <option [ngValue]="0">
-                        0
+                        Нет
                       </option>
                       <option [ngValue]="1">
-                        1
+                        Да
                       </option>
                     </select>
                   </div>
@@ -179,7 +206,7 @@ import { Router } from '@angular/router';
                 <button class="remove-button" (click)="remove(one, i)">Удалить</button>
                 <div class='params' *ngIf="one.isshown">
                   <div *ngFor="let param of one | keyvalue">
-                    <div *ngIf="param.key!='isshown'">
+                    <div *ngIf="param.key!='isshown' && param.key!='row_id'">
                       <b>{{param.key}}</b> : <i>{{param.value}}</i>
                     </div>
                   </div>
@@ -264,12 +291,18 @@ export class Data {
 
 export class Params {
   feature_id:	string;
+  alias: Alias;
   feature_name:	string;
   display_name: string;
   appropriate_values:	Array<number>;
   left_border:	number;
   right_border:	number;
   feature_type:	string;
+}
+
+export class Alias {
+  0: string;
+  1: string;
 }
 
 export class Params2 {

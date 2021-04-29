@@ -32,8 +32,27 @@ import { Router } from '@angular/router';
         margin-bottom: 10px;
         text-align: left;
       }
-      
-   
+      [data-tooltip] {
+    position: relative; /* Относительное позиционирование */ 
+   }
+   [data-tooltip]::after {
+    content: attr(data-tooltip); /* Выводим текст */
+    position: absolute; /* Абсолютное позиционирование */
+    width: 300px; /* Ширина подсказки */
+    left: 0; top: 0; /* Положение подсказки */
+    background: #3989c9; /* Синий цвет фона */
+    color: #fff; /* Цвет текста */
+    padding: 0.5em; /* Поля вокруг текста */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Параметры тени */
+    pointer-events: none; /* Подсказка */
+    opacity: 0; /* Подсказка невидима */
+    transition: 1s; /* Время появления подсказки */
+   } 
+   [data-tooltip]:hover::after {
+    opacity: 1; /* Показываем подсказку */
+    left: 6em; /* Положение подсказки */
+     
+   }
     `],
     template: `<h5 class="data-header">История обучения моделей</h5>
     <div class="history-div">
@@ -51,6 +70,7 @@ import { Router } from '@angular/router';
                 <!---->
               <!--</div>-->
             </div>
+            <!--<p class='help' data-tooltip="Всплывающая подсказка">asd</p>-->
           </div>
         </li>
       </ul>

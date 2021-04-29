@@ -8,6 +8,45 @@ import { CookieManager } from './supporting';
 @Component({
     selector: 'login',
     styles: [`
+      .login-header {
+        text-align: center;
+        margin-bottom: 25px;
+      }
+      .predict-div {
+        width: 1500px;
+        margin: 0 auto;
+        padding-top: 10px;
+        text-align: center;
+        /*background-color: #e3f2fd;*/
+        border-radius: 23px;
+      }
+      .add-data{
+        margin-top: 4px;
+        
+      }
+      .ft-name {
+        float: left;
+        margin-left: 20px;
+        margin-top: 4px;
+      }
+
+      .inputs {
+        margin-left: 80px;
+        width: 210px;
+        border-radius: 8px;
+        margin-top: 4px;
+      }
+      .selects {
+        margin-left: 80px;
+        width: 210px;
+        border-radius: 8px;
+        margin-top: 4px;
+      }
+      .submit-button {
+          border-radius: 16px;
+          width: 180px;
+          margin: 15px;
+        }
       .admin-header {
         text-align: center;
         margin-bottom: 15px;
@@ -48,35 +87,35 @@ import { CookieManager } from './supporting';
 
     `],
     template: `
-      <h4 class='user-header'>Прогнозирование заболевания</h4>
+      <h4 class='login-header'>Вход в систему</h4>
       <div class='predict-div'>
         <form #myForm="ngForm">
           <div class='add-data'>
             <div class="container">
               <div class="row">
-                <div class="col-3"></div>
-                <div class="col-2">
+                <div class="col-4"></div>
+                <div class="col-1">
                   <div class="ft-name">Логин</div>
                   <div class="ft-name">Пароль</div>
-                  <div class="ft-name">Админ</div>
+                  <div class="ft-name">Роль</div>
                 </div>
                 <div class="col-2">
                   <input class='inputs' name="login" type="text" placeholder="Логин" ngModel required>
                   <input class='inputs' name="password" type="text" placeholder="Пароль" ngModel required>
                   <select class='selects' name="admin" ngModel required>
-                    <option value="" disabled selected>Админ</option>
+                    <option value="" disabled selected>Роль</option>
                     <option [ngValue]="1">
-                      Да
+                      Администратор
                     </option>
                     <option [ngValue]="0">
-                      Нет
+                      Пациент
                     </option>
                   </select>
                 </div>
               </div>
             </div>
           </div>
-          <button class='submit-button' (click)="submit(myForm)" type="submit" [disabled]="myForm.invalid">Отправить форму</button>
+          <button class='submit-button' (click)="submit(myForm)" type="submit" [disabled]="myForm.invalid">Войти</button>
         </form>
       </div>`,
   providers: [HttpService]

@@ -65,12 +65,42 @@ import {CookieManager} from './supporting';
                 <div class="col-2">
                   <input class='inputs' *ngIf="feature.feature_type=='float'" [name]="feature.feature_name" type="number" 
                          [placeholder]="feature.feature_name" [min]="feature.left_border" [max]="feature.right_border" ngModel required>
-                  <select class='selects' *ngIf="feature.feature_type=='boolean'" [name]="feature.feature_name" ngModel required>
-                    <option value="" disabled selected>{{feature.feature_name}}</option>
-                    <option *ngFor="let app_value of feature.appropriate_values" [ngValue]="app_value">
-                      {{app_value}}
-                    </option>
-                  </select>
+                  <!--<select class='selects' *ngIf="feature.feature_type=='boolean'" [name]="feature.feature_name" ngModel required>-->
+                    <!--<option value="" disabled selected>{{feature.feature_name}}</option>-->
+                    <!--<option *ngFor="let app_value of feature.appropriate_values" [ngValue]="app_value">-->
+                      <!--{{app_value}}-->
+                    <!--</option>-->
+                  <!--</select>-->
+                  
+                  <select class='selects' *ngIf="feature.feature_name=='gender'" [name]="feature.feature_name" ngModel required>
+                      <option value="" disabled selected>{{feature.feature_name}}</option>
+                      <option [ngValue]="0">
+                        Женский
+                      </option>
+                      <option [ngValue]="1">
+                        Мужской
+                      </option>
+                    </select>
+                    <select class='selects' *ngIf="feature.feature_name=='smoking'" [name]="feature.feature_name" ngModel required>
+                      <option value="" disabled selected>{{feature.feature_name}}</option>
+                      <option [ngValue]="0">
+                        Некурящий
+                      </option>
+                      <option [ngValue]="1">
+                        Курящий
+                      </option>
+                    </select>
+                    <select class='selects' *ngIf="feature.feature_name=='diseasehypertonia'" [name]="feature.feature_name" ngModel required>
+                      <option value="" disabled selected>{{feature.feature_name}}</option>
+                      <option [ngValue]="0">
+                        Отсутствует
+                      </option>
+                      <option [ngValue]="1">
+                        Присутствует
+                      </option>
+                    </select>
+                  
+                  
                 </div>
               </div>
             </div>
