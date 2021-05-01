@@ -201,27 +201,27 @@ import { UploadService} from './upload.service';
           </form>
           
           
-          <div style="text-align:center; margin-top: 100px; ">
-            <mat-card style="margin-top:10px; width: 50%;">  
-              <mat-card-content>  
-                <ul>  
-                  <li *ngFor="let file of files">  
-                      <mat-progress-bar [value]="file.progress"></mat-progress-bar>  
-                      <span id="file-label">  
-                            
-                      </span>  
-                  </li>  
-                </ul>
-              </mat-card-content>
-              <mat-card-actions>  
-                <button mat-button color="warn" (click)="onClick()">  
-                  <mat-icon>file_upload</mat-icon>  
-                  Upload  
-                </button>  
-              </mat-card-actions>  
-            </mat-card>
-            <input type="file" #fileUpload id="fileUpload" name="fileUpload" multiple="multiple" accept="image/*" style="display:none;" />
-          </div>
+          <!--<div style="text-align:center; margin-top: 100px; ">-->
+            <!--<mat-card style="margin-top:10px; width: 50%;">  -->
+              <!--<mat-card-content>  -->
+                <!--<ul>  -->
+                  <!--<li *ngFor="let file of files">  -->
+                      <!--<mat-progress-bar [value]="file.progress"></mat-progress-bar>  -->
+                      <!--<span id="file-label">  -->
+                            <!---->
+                      <!--</span>  -->
+                  <!--</li>  -->
+                <!--</ul>-->
+              <!--</mat-card-content>-->
+              <!--<mat-card-actions>  -->
+                <!--<button mat-button color="warn" (click)="onClick()">  -->
+                  <!--<mat-icon>file_upload</mat-icon>  -->
+                  <!--Upload  -->
+                <!--</button>  -->
+              <!--</mat-card-actions>  -->
+            <!--</mat-card>-->
+            <!--<input type="file" #fileUpload id="fileUpload" name="fileUpload" multiple="multiple" accept="image/*" style="display:none;" />-->
+          <!--</div>-->
           
           
           
@@ -304,27 +304,27 @@ export class AdminChangeDataComponent implements OnInit{
   }
 
   uploadFile(file): any {
-    const formData = new FormData();
-    formData.append('file', file.data);
-    file.inProgress = true;
-    this.uploadService.upload(formData).pipe(
-      map(event => {
-        switch (event.type) {
-          case HttpEventType.UploadProgress:
-            file.progress = Math.round(event.loaded * 100 / event.total);
-            break;
-          case HttpEventType.Response:
-            return event;
-        }
-      }),
-      catchError((error: HttpErrorResponse) => {
-        file.inProgress = false;
-        return of(`${file.data.name} upload failed.`);
-      })).subscribe((event: any) => {
-        if (typeof (event) === 'object') {
-          console.log(event.body);
-        }
-      });
+    // const formData = new FormData();
+    // formData.append('file', file.data);
+    // file.inProgress = true;
+    // this.uploadService.upload(formData).pipe(
+    //   map(event => {
+    //     switch (event.type) {
+    //       case HttpEventType.UploadProgress:
+    //         file.progress = Math.round(event.loaded * 100 / event.total);
+    //         break;
+    //       case HttpEventType.Response:
+    //         return event;
+    //     }
+    //   }),
+    //   catchError((error: HttpErrorResponse) => {
+    //     file.inProgress = false;
+    //     return of(`${file.data.name} upload failed.`);
+    //   })).subscribe((event: any) => {
+    //     if (typeof (event) === 'object') {
+    //       console.log(event.body);
+    //     }
+    //   });
   }
 
   private uploadFiles(): any{

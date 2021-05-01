@@ -15,6 +15,7 @@ import {PredictStateComponent} from './predict-state.component';
 import {RegistrationComponent} from './registration.component';
 import {LoginComponent} from './login.component';
 import {Observable} from 'rxjs';
+import {FileTestComponent} from './file-test.component';
 
 
 
@@ -30,13 +31,14 @@ const appRoutes: Routes = [
   {path: 'admin', component: AdminComponent, children: adminRoutes},
   {path: 'login', component: LoginComponent},
   {path: 'registration', component: RegistrationComponent},
-  {path: '', component: PredictStateComponent}
+  {path: '', component: PredictStateComponent},
+  {path: 'file', component: FileTestComponent}
 ];
 
 @NgModule({
   declarations: [AppComponent, AdminComponent, AdminChangeDataComponent, AdminLearnModelComponent,
   AdminModelsHistoryComponent, AdminSetModelComponent, PredictStateComponent,
-  LoginComponent, RegistrationComponent],
+  LoginComponent, RegistrationComponent, FileTestComponent],
   imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, HttpClientModule,
     RouterModule.forRoot(appRoutes)],
   providers: [],

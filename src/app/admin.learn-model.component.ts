@@ -209,7 +209,7 @@ export class AdminLearnModelComponent implements OnInit{
         this.dt = setInterval(() => {
           this.httpService.getRequest(SystemInfo.systemUrl + '?command=get_last_fitted_model').subscribe((data2: any) => {
             this.err_code2 = data2['error_code'];
-            console.log(this.err_code2);
+            console.log(typeof(this.err_code2));
             if (this.err_code2 !== 613) {
               clearInterval(this.dt);
               if (this.err_code2 === 0) {
