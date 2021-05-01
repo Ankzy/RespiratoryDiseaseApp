@@ -199,6 +199,32 @@ import { UploadService} from './upload.service';
             </div>
             <button class="submit-button" type="submit" (click)="submit(myForm)" [disabled]="myForm.invalid">Добавить </button>
           </form>
+          
+          
+          <div style="text-align:center; margin-top: 100px; ">
+            <mat-card style="margin-top:10px; width: 50%;">  
+              <mat-card-content>  
+                <ul>  
+                  <li *ngFor="let file of files">  
+                      <mat-progress-bar [value]="file.progress"></mat-progress-bar>  
+                      <span id="file-label">  
+                            
+                      </span>  
+                  </li>  
+                </ul>
+              </mat-card-content>
+              <mat-card-actions>  
+                <button mat-button color="warn" (click)="onClick()">  
+                  <mat-icon>file_upload</mat-icon>  
+                  Upload  
+                </button>  
+              </mat-card-actions>  
+            </mat-card>
+            <input type="file" #fileUpload id="fileUpload" name="fileUpload" multiple="multiple" accept="image/*" style="display:none;" />
+          </div>
+          
+          
+          
         </div>
         <div class="col-6">
           <h5 class="list-header">Список данных</h5>
@@ -277,7 +303,7 @@ export class AdminChangeDataComponent implements OnInit{
     });
   }
 
-  uploadFile(file) {
+  uploadFile(file): any {
     const formData = new FormData();
     formData.append('file', file.data);
     file.inProgress = true;
@@ -301,14 +327,14 @@ export class AdminChangeDataComponent implements OnInit{
       });
   }
 
-  private uploadFiles() {
+  private uploadFiles(): any{
     this.fileUpload.nativeElement.value = '';
     this.files.forEach(file => {
       this.uploadFile(file);
     });
   }
 
-  onClick() {
+  onClick(): any{
     const fileUpload = this.fileUpload.nativeElement; fileUpload.onchange = () => {
     for (let index = 0; index < fileUpload.files.length; index++)
     {

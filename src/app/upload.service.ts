@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent, HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { HttpService } from './http.service';
-import { SystemInfo} from './supporting';
+import { SystemInfo } from "./supporting";
 
 
 @Injectable({
@@ -10,10 +10,10 @@ import { SystemInfo} from './supporting';
 })
 export class UploadService {
 
-  constructor(private httpService: HttpService) {}
+  constructor(private httpClient: HttpClient) {}
 
   public upload(formData): any {
-    return this.httpService.postRequest<any>(SystemInfo.systemUrl, formData, {
+    return this.httpClient.post<any>(SystemInfo.systemUrl, formData, {
         reportProgress: true,
         observe: 'events'
       });
