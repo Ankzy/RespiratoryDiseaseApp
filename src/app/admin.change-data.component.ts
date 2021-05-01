@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { HttpService } from './http.service';
 import { SystemInfo } from './supporting';
 import { CookieManager } from './supporting';
 import { Router } from '@angular/router';
+import { HttpEventType, HttpErrorResponse } from '@angular/common/http';
+import { of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { UploadService} from './upload.service';
 
 
 @Component({
@@ -218,7 +222,7 @@ import { Router } from '@angular/router';
       </div>
     </div>
     `,
-  providers: [HttpService]
+  providers: [HttpService, UploadService]
 })
 
 export class AdminChangeDataComponent implements OnInit{
@@ -229,7 +233,8 @@ export class AdminChangeDataComponent implements OnInit{
   err_code: number;
   err_code2: number;
 
-  constructor(private httpService: HttpService, private route: Router){}
+  @ViewChild('fileUpload', {static: false}) fileUpload: ElementRef; files  = [];
+  constructor(private httpService: HttpService, private route: Router, private uploadService: UploadService){}
 
   ngOnInit(): any{
     if (CookieManager.getCookie('user') !== '') {
@@ -270,6 +275,49 @@ export class AdminChangeDataComponent implements OnInit{
       if (this.err_code2 === 0) { alert('Данные добавлены.'); }
       else { alert('Ошибка добавления данных'); }
     });
+  }
+
+  uploadFile(file) {
+    const formData = new FormData();
+    formData.append('file', file.data);
+    file.inProgress = true;
+    this.uploadService.upload(formData).pipe(
+      map(event => {
+        switch (event.type) {
+          case HttpEventType.UploadProgress:
+            file.progress = Math.round(event.loaded * 100 / event.total);
+            break;
+          case HttpEventType.Response:
+            return event;
+        }
+      }),
+      catchError((error: HttpErrorResponse) => {
+        file.inProgress = false;
+        return of(`${file.data.name} upload failed.`);
+      })).subscribe((event: any) => {
+        if (typeof (event) === 'object') {
+          console.log(event.body);
+        }
+      });
+  }
+
+  private uploadFiles() {
+    this.fileUpload.nativeElement.value = '';
+    this.files.forEach(file => {
+      this.uploadFile(file);
+    });
+  }
+
+  onClick() {
+    const fileUpload = this.fileUpload.nativeElement; fileUpload.onchange = () => {
+    for (let index = 0; index < fileUpload.files.length; index++)
+    {
+     const file = fileUpload.files[index];
+     this.files.push({ data: file, inProgress: false, progress: 0});
+    }
+      this.uploadFiles();
+    };
+    fileUpload.click();
   }
 }
 
