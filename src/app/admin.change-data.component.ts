@@ -10,6 +10,7 @@ import { catchError, map } from 'rxjs/operators';
 import { UploadService} from './upload.service';
 
 
+
 @Component({
     selector: 'admin-change-data',
     styles: [`
@@ -18,6 +19,11 @@ import { UploadService} from './upload.service';
         margin-left: 135px;
         margin-bottom: 20px;
         margin-top: 20px;
+      }
+       .load-header {
+        margin-left: 80px;
+        margin-bottom: 20px;
+        margin-top: 30px;
       }
       .list-header {
         text-align: center;
@@ -75,7 +81,9 @@ import { UploadService} from './upload.service';
         /*display: inline;*/
         margin-top: 4px;
       }
-      
+      .file-form {
+        margin-left: 12px;
+      }
       .inputs {
         width: 200px;
         border-radius: 8px;
@@ -85,9 +93,20 @@ import { UploadService} from './upload.service';
         border-radius: 8px;
         
       }
+      .file-input {
+        border-radius: 8px;
+      }
       .submit-button {
         margin-top: 15px;
-        margin-left: 110px;
+        margin-left: 115px;
+        width: 180px;
+        
+        border-radius: 16px;
+        
+      }
+      .file-button {
+        margin-top: 15px;
+        margin-left: 55px;
         width: 180px;
         
         border-radius: 16px;
@@ -119,12 +138,56 @@ import { UploadService} from './upload.service';
         color: red;
       }  
       
+      /*[data-tooltip] {*/
+    /*position: relative; !* Относительное позиционирование *! */
+   /*}*/
+   /*[data-tooltip]::after {*/
+    /*content: attr(data-tooltip); !* Выводим текст *!*/
+    /*position: absolute; !* Абсолютное позиционирование *!*/
+    /*width: 300px; !* Ширина подсказки *!*/
+    /*left: 0; top: 0; !* Положение подсказки *!*/
+    /*background: #3989c9; !* Синий цвет фона *!*/
+    /*color: #fff; !* Цвет текста *!*/
+    /*padding: 0.5em; !* Поля вокруг текста *!*/
+    /*box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); !* Параметры тени *!*/
+    /*pointer-events: none; !* Подсказка *!*/
+    /*opacity: 0; !* Подсказка невидима *!*/
+    /*transition: 1s; !* Время появления подсказки *!*/
+   /*} */
+   /*[data-tooltip]:hover::after {*/
+     /*opacity: 1; !* Показываем подсказку *!*/
+     /*left: 30px; !* Положение подсказки *!*/
+   /*}  */
+      /*[ngbTooltip] {*/
+    /*position: relative; !* Относительное позиционирование *! */
+   /*}*/
+   /*[ngbTooltip]::after {*/
+    /*content: attr(ngbTooltip); !* Выводим текст *!*/
+    /*position: absolute; !* Абсолютное позиционирование *!*/
+    /*width: 300px; !* Ширина подсказки *!*/
+    /*left: 0; top: 0; !* Положение подсказки *!*/
+    /*background: #3989c9; !* Синий цвет фона *!*/
+    /*color: #fff; !* Цвет текста *!*/
+    /*padding: 0.5em; !* Поля вокруг текста *!*/
+    /*box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); !* Параметры тени *!*/
+    /*pointer-events: none; !* Подсказка *!*/
+    /*opacity: 0; !* Подсказка невидима *!*/
+    /*transition: 1s; !* Время появления подсказки *!*/
+   /*} */
+   /*[ngbTooltip]:hover::after {*/
+     /*opacity: 1; !* Показываем подсказку *!*/
+     /*left: 30px; !* Положение подсказки *!*/
+     /**/
+   /*}*/
+      
       input.ng-touched.ng-invalid {border:solid red 2px;}  
       input.ng-touched.ng-valid {border:solid green 2px;}
     `],
     template: `<!--<h5 class="data-header">Изменение обучающей выборки</h5>-->
     <!--<button *ngIf="!form_show" (click)="form_show=!form_show">Показать форму загрузки данных</button>-->
     <!--<div *ngIf="form_show">-->
+    
+
     <div class="container">
       <div class="row">
         <div class="col-1"></div>
@@ -135,7 +198,8 @@ import { UploadService} from './upload.service';
               <div class="container">
                 <div class="row">
                   <div class="col-6">
-                    <span class="ft-name">{{feature.feature_name}}</span>
+                    
+                    <span class="ft-name" data-toggle="tooltip" title="{{feature.feature_hint}}">{{feature.feature_name}}</span>
                   </div>
                   <div class="col-6">
                     <input class='inputs' *ngIf="feature.feature_type=='float'" [name]="feature.feature_name" [placeholder]="feature.feature_name" type="number" 
@@ -181,7 +245,7 @@ import { UploadService} from './upload.service';
               <div class="container">
                 <div class="row">
                   <div class="col-6">
-                    <span class="ft-name">respiratory disease</span>
+                    <span class="ft-name" data-toggle="tooltip" title="Наличие респитарного заболевания">respiratory disease</span>
                   </div>
                   <div class="col-6">
                     <select class='selects' name="respiratory_disease" ngModel required>
@@ -200,36 +264,38 @@ import { UploadService} from './upload.service';
             <button class="submit-button" type="submit" (click)="submit(myForm)" [disabled]="myForm.invalid">Добавить </button>
           </form>
           
+          <h5 class="load-header">Загрузка данных в формате CSV</h5>
+          <div class="container">
+            <div class="row">
+              <div class="col-1">
+                
+              </div>
+              <div class="col-8">
+                <form class="file-form">
+                  <div>
+                    <input class="form-control file-input" type='file' (change)='convertFile(input)' id='fileInput' #input>
+                  </div>
+                  <div>
+                    <button class='file-button' type="submit" (click)="submitCSV()">Загрузить</button>
+                  </div>
+                </form>
+              </div>
+              <div class="col-3">
+                
+              </div>
+            </div>
+          </div>
           
-          <!--<div style="text-align:center; margin-top: 100px; ">-->
-            <!--<mat-card style="margin-top:10px; width: 50%;">  -->
-              <!--<mat-card-content>  -->
-                <!--<ul>  -->
-                  <!--<li *ngFor="let file of files">  -->
-                      <!--<mat-progress-bar [value]="file.progress"></mat-progress-bar>  -->
-                      <!--<span id="file-label">  -->
-                            <!---->
-                      <!--</span>  -->
-                  <!--</li>  -->
-                <!--</ul>-->
-              <!--</mat-card-content>-->
-              <!--<mat-card-actions>  -->
-                <!--<button mat-button color="warn" (click)="onClick()">  -->
-                  <!--<mat-icon>file_upload</mat-icon>  -->
-                  <!--Upload  -->
-                <!--</button>  -->
-              <!--</mat-card-actions>  -->
-            <!--</mat-card>-->
-            <!--<input type="file" #fileUpload id="fileUpload" name="fileUpload" multiple="multiple" accept="image/*" style="display:none;" />-->
-          <!--</div>-->
-          
-          
-          
+         
+        
         </div>
+        
         <div class="col-6">
           <h5 class="list-header">Список данных</h5>
           <div class="data">
             <ul>
+              <!--<img *ngIf="loading" src="/assets/2.jpg" alt="loading" />-->
+<!--<img [hidden]="loading" (load)="onLoad()" src="/assets/3.jpg" />-->
               <li *ngFor="let one of sample; index as i">
                 <span class="data-index">ЭКГ №{{i+1}}</span>
                 <button class="info-button" (click)="info(one)">Подробнее</button>
@@ -248,21 +314,28 @@ import { UploadService} from './upload.service';
       </div>
     </div>
     `,
-  providers: [HttpService, UploadService]
+  providers: [HttpService, UploadService],
 })
 
-export class AdminChangeDataComponent implements OnInit{
+export class AdminChangeDataComponent implements OnInit {
 
   sample: Data[] = [];
   features: Params[] = [];
   form_show: boolean = false;
   err_code: number;
   err_code2: number;
+  text: any;
+  JSONData: any;
+  tooltipText: string = 'asd';
 
-  @ViewChild('fileUpload', {static: false}) fileUpload: ElementRef; files  = [];
-  constructor(private httpService: HttpService, private route: Router, private uploadService: UploadService){}
 
-  ngOnInit(): any{
+
+
+
+  constructor(private httpService: HttpService, private route: Router, private uploadService: UploadService) {
+  }
+
+  ngOnInit(): any {
     if (CookieManager.getCookie('user') !== '') {
       this.httpService.getRequest(SystemInfo.systemUrl + '?command=get_features_template').subscribe(
         (data: any) => this.features = data['data']);
@@ -274,13 +347,24 @@ export class AdminChangeDataComponent implements OnInit{
     }
   }
 
-  info(model): any{
-    if (model.isshown !== false && model.isshown !== true) { model.isshown = true; }
-    else { model.isshown = !model.isshown; }
+  loading: boolean = true;
+
+  onLoad() {
+    this.loading = false;
+    console.log('ads')
   }
 
-  remove(model, i): any{
-    if (confirm('Are you want to delete item ' + model.row_id + '?')){
+  info(model): any {
+    if (model.isshown !== false && model.isshown !== true) {
+      model.isshown = true;
+    }
+    else {
+      model.isshown = !model.isshown;
+    }
+  }
+
+  remove(model, i): any {
+    if (confirm('Are you want to delete item ' + model.row_id + '?')) {
       const body = {command: 'remove_fitting_data', args: {row_ids: [model.row_id]}};
       this.httpService.postRequest(SystemInfo.baseUrl, body).subscribe((data: any) => {
         this.err_code = data.body['error_code'];
@@ -288,64 +372,79 @@ export class AdminChangeDataComponent implements OnInit{
           alert('Данные удалены');
           this.sample.splice(i, 1);
         }
-        else { alert('Ошибка! Данные не удалось удалить.'); }
+        else {
+          alert('Ошибка! Данные не удалось удалить.');
+        }
       });
     }
   }
 
-  submit(form: NgForm): any{
+  submit(form: NgForm): any {
     const body = {command: 'add_fitting_data', args: {rows: [form.value]}};
     console.log(body);
     this.httpService.postRequest(SystemInfo.systemUrl, body).subscribe((data: any) => {
       this.err_code2 = data.body['error_code'];
-      if (this.err_code2 === 0) { alert('Данные добавлены.'); }
-      else { alert('Ошибка добавления данных'); }
+      if (this.err_code2 === 0) {
+        alert('Данные добавлены.');
+      }
+      else {
+        alert('Ошибка добавления данных');
+      }
+      this.httpService.getRequest(SystemInfo.systemUrl + '?command=get_fitting_data').subscribe(
+        (data: any) => this.sample = data['data']);
     });
   }
 
-  uploadFile(file): any {
-    // const formData = new FormData();
-    // formData.append('file', file.data);
-    // file.inProgress = true;
-    // this.uploadService.upload(formData).pipe(
-    //   map(event => {
-    //     switch (event.type) {
-    //       case HttpEventType.UploadProgress:
-    //         file.progress = Math.round(event.loaded * 100 / event.total);
-    //         break;
-    //       case HttpEventType.Response:
-    //         return event;
-    //     }
-    //   }),
-    //   catchError((error: HttpErrorResponse) => {
-    //     file.inProgress = false;
-    //     return of(`${file.data.name} upload failed.`);
-    //   })).subscribe((event: any) => {
-    //     if (typeof (event) === 'object') {
-    //       console.log(event.body);
-    //     }
-    //   });
-  }
+  submitCSV() {
 
-  private uploadFiles(): any{
-    this.fileUpload.nativeElement.value = '';
-    this.files.forEach(file => {
-      this.uploadFile(file);
+    const body = {command: 'load_csv', args: {file: this.JSONData}};
+    this.httpService.postRequest(SystemInfo.systemUrl, body).subscribe((data: any) => {
+      this.err_code = data.body['error_code'];
+      if (this.err_code === 0) {
+        alert('Данные загружены.');
+      }
+      else {
+        alert('Ошибка загрузки данных');
+      }
+      this.httpService.getRequest(SystemInfo.systemUrl + '?command=get_fitting_data').subscribe(
+        (data: any) => this.sample = data['data']);
     });
+
   }
 
-  onClick(): any{
-    const fileUpload = this.fileUpload.nativeElement; fileUpload.onchange = () => {
-    for (let index = 0; index < fileUpload.files.length; index++)
-    {
-     const file = fileUpload.files[index];
-     this.files.push({ data: file, inProgress: false, progress: 0});
+  csvJSON(csvText) {
+
+    var lines = csvText.split("\n");
+    var result = [];
+    var headers = lines[0].split(",");
+    console.log(headers);
+    for (var i = 1; i < lines.length-1; i++) {
+      var obj = {};
+      var currentline = lines[i].split(",");
+      for (var j = 0; j < headers.length; j++) {
+        obj[headers[j]] = currentline[j];
+      }
+      result.push(obj);
     }
-      this.uploadFiles();
+
+    console.log(JSON.stringify(result)); //JSON
+    this.JSONData = JSON.stringify(result);
+
+  }
+
+
+  convertFile(input) {
+    const reader = new FileReader();
+    reader.readAsText(input.files[0]);
+    reader.onload = () => {
+      let text = reader.result;
+      this.text = text;
+      console.log(text);
+      this.csvJSON(text);
     };
-    fileUpload.click();
   }
 }
+
 
 export class Data {
   row_id: string;
@@ -367,6 +466,7 @@ export class Params {
   feature_id:	string;
   alias: Alias;
   feature_name:	string;
+  feature_hint: string;
   display_name: string;
   appropriate_values:	Array<number>;
   left_border:	number;
@@ -379,12 +479,12 @@ export class Alias {
   1: string;
 }
 
-export class Params2 {
-  feature_id:	string;
-  feature_name:	string;
-  display_name: string;
-  appropriate_values:	Array<number>;
-  left_border:	number;
-  right_border:	number;
-  feature_type:	string;
-}
+// export class Params2 {
+//   feature_id:	string;
+//   feature_name:	string;
+//   display_name: string;
+//   appropriate_values:	Array<number>;
+//   left_border:	number;
+//   right_border:	number;
+//   feature_type:	string;
+// }

@@ -16,6 +16,8 @@ import {RegistrationComponent} from './registration.component';
 import {LoginComponent} from './login.component';
 import {Observable} from 'rxjs';
 import {FileTestComponent} from './file-test.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 
 
@@ -40,7 +42,7 @@ const appRoutes: Routes = [
   AdminModelsHistoryComponent, AdminSetModelComponent, PredictStateComponent,
   LoginComponent, RegistrationComponent, FileTestComponent],
   imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, HttpClientModule,
-    RouterModule.forRoot(appRoutes)],
+    RouterModule.forRoot(appRoutes), BrowserAnimationsModule, MatTooltipModule],
   providers: [],
   bootstrap: [AppComponent]
 })

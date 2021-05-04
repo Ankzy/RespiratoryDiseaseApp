@@ -3,6 +3,7 @@ import { NgForm} from '@angular/forms';
 import { HttpService } from './http.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import {SystemInfo} from './supporting';
 
 
 
@@ -14,17 +15,34 @@ import { HttpClient } from '@angular/common/http';
     `],
     template: `
       
-      <h1>Upload file test</h1>
-<div>
-    <form [formGroup] = "uploadForm" (ngSubmit)="onSubmit()">      
-      <div>
-        <input type="file" name="profile" (change)="onFileSelect($event)" />
-      </div>
-      <div>
-        <button type="submit">Upload</button>
-      </div>
-    </form>
-  </div>
+      <!--<h1>Upload file test</h1>-->
+<!--<div>-->
+    <!--<form [formGroup] = "uploadForm" (ngSubmit)="onSubmit()">      -->
+      <!--<div>-->
+        <!--<input type="file" name="profile" (change)="onFileSelect($event)" />-->
+      <!--</div>-->
+      <!--<div>-->
+        <!--<button type="submit">Upload</button>-->
+      <!--</div>-->
+    <!--</form>-->
+  <!---->
+ <!--<h1>-->
+  <!--{{title}}-->
+<!--</h1>-->
+
+  <form>
+    <div>
+      <input class="form-control" type='file' (change)='convertFile(input)' id='fileInput' #input>
+    </div>
+    <div>
+      <button type="submit" (click)="submitCSV()">Загрузить</button>
+    </div>
+  </form>
+  
+
+
+      
+      
 
 
       `,
@@ -33,34 +51,56 @@ import { HttpClient } from '@angular/common/http';
 
 export class FileTestComponent implements OnInit {
 
-  SERVER_URL = "http://localhost:8080";
-  uploadForm: FormGroup;
+  err_code: string;
+  title = 'csvTOjson works!';
+  text  : any ;
+  JSONData : any;
 
-  constructor(private formBuilder: FormBuilder, private httpClient: HttpClient) {}
+  constructor(private httpService: HttpService) {}
 
   ngOnInit() {
-    this.uploadForm = this.formBuilder.group({
-      profile: ['']
+
+  }
+
+  submitCSV() {
+
+    const body = {command: 'load_csv', args: {file: this.JSONData}};
+    this.httpService.postRequest(SystemInfo.systemUrl, body).subscribe((data: any) => {
+      this.err_code = data.body['error_code'];
+      console.log(this.err_code)
     });
+
   }
 
-  onFileSelect(event) {
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.uploadForm.get('profile').setValue(file);
+  csvJSON(csvText) {
+
+    var lines = csvText.split("\n");
+    var result = [];
+    var headers = lines[0].split(",");
+    console.log(headers);
+    for (var i = 1; i < lines.length-1; i++) {
+      var obj = {};
+      var currentline = lines[i].split(",");
+      for (var j = 0; j < headers.length; j++) {
+        obj[headers[j]] = currentline[j];
+      }
+      result.push(obj);
     }
-  }
 
-  onSubmit() {
-    const formData = new FormData();
-    formData.append('file', this.uploadForm.get('profile').value);
+    console.log(JSON.stringify(result)); //JSON
+    this.JSONData = JSON.stringify(result);
 
-    this.httpClient.post<any>(this.SERVER_URL, formData).subscribe(
-      (res) => console.log(res),
-      (err) => console.log(err)
-    );
   }
 
 
-
+  convertFile(input) {
+    const reader = new FileReader();
+    reader.readAsText(input.files[0]);
+    reader.onload = () => {
+      let text = reader.result;
+      this.text = text;
+      console.log(text);
+      this.csvJSON(text);
+    };
+  }
 }
