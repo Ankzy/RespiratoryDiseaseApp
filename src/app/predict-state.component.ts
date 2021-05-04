@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {HttpService} from './http.service';
 import {Router} from '@angular/router';
-import {CookieManager} from './supporting';
+import {CookieManager, SystemInfo} from './supporting';
 
 
 @Component({
@@ -136,7 +136,7 @@ export class PredictStateComponent implements OnInit{
         (data: any) => this.features = data['data']
       );
       this.httpService.getRequest('http://localhost:8080/system?command=get_working_model').subscribe(
-        (data: any) => this.working_model = data['data']['display_name']
+        (data: any) => this.working_model = data['display_name']
       );
     }
     else{
@@ -147,7 +147,7 @@ export class PredictStateComponent implements OnInit{
   submit(form: NgForm) {
     const body = {command: 'predict_state', args: {data: form.value}};
     console.log(body);
-    this.httpService.postRequest('http://localhost:8080/system', body).subscribe((data: any) => {
+    this.httpService.postRequest(SystemInfo.systemUrl, body).subscribe((data: any) => {
       if (data.body['error_code'] === 0) {
         if (data.body.data === 0) { alert('Рекомендуется более глубокое обследование!'); }
         if (data.body.data === 1) { alert('Признаки респираторных заболеваний не обнаружены.'); }
