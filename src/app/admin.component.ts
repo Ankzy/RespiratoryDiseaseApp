@@ -1,4 +1,7 @@
-import { Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {HttpService} from './http.service';
+import {Router} from '@angular/router';
+import {CookieManager} from './supporting';
 
 @Component({
     selector: 'admin',
@@ -68,8 +71,18 @@ import { Component} from '@angular/core';
        
       </div>
 
-    <router-outlet></router-outlet>`
+    <router-outlet></router-outlet>`,
+  providers: [HttpService]
 })
-export class AdminComponent{
+export class AdminComponent implements OnInit{
+
+  constructor(private httpService: HttpService, private route: Router) {}
+
+  ngOnInit(): any {
+    if ((CookieManager.getCookie('user') == '') || (CookieManager.getCookie('admin') == 0)) {
+      this.route.navigate(['login']);
+    }
+  }
+
 
 }

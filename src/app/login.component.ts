@@ -136,10 +136,10 @@ export class LoginComponent implements OnInit{
 
     this.httpService.postRequest(SystemInfo.loginUrl, requestBody).subscribe((data: any) => {
       if (data.body['error_code'] === 0) {
-        if (form.value.admin === 0) {
+        if (CookieManager.getCookie('admin') == 0) {
           this.route.navigate(['']);
         }
-        else if (form.value.admin === 1) {
+        else if (CookieManager.getCookie('admin') == 1) {
           this.route.navigate(['admin'])
         }
       }

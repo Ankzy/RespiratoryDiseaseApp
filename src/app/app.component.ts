@@ -1,5 +1,6 @@
 import { Component} from '@angular/core';
 import {Router} from '@angular/router';
+import {CookieManager} from './supporting';
 
 @Component({
     selector: 'my-app',
@@ -45,10 +46,10 @@ import {Router} from '@angular/router';
                 <div class="col-2">
                   <ul class="navbar-nav mr-auto rightnav">
                     <li class="nav-item">
-                      <a *ngIf="router.url!=='/'" class="nav-link" routerLink="">Пациент</a>
+                      <a *ngIf="router.url!=='/'" [hidden]="router.url==='/registration' || router.url==='/login'"  class="nav-link" routerLink="">Пациент</a>
                     </li>
                     <li class="nav-item">
-                      <a *ngIf="router.url==='/'" class="nav-link" routerLink="/admin">Администратор</a>
+                      <a *ngIf="router.url==='/'" [hidden]="router.url==='/registration' || router.url==='/login' || isAdmin==0" class="nav-link" routerLink="/admin">Администратор</a>
                     </li>
                   </ul>
                 </div>
@@ -62,5 +63,11 @@ import {Router} from '@angular/router';
     `
 })
 export class AppComponent {
-  constructor(public router: Router) {}
+
+  isAdmin: number;
+
+  constructor(public router: Router) {
+    this.isAdmin = CookieManager.getCookie('admin');
+    console.log(this.isAdmin)
+  }
 }
