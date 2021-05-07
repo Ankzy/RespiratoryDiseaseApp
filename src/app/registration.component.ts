@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { NgForm} from '@angular/forms';
 import { HttpService } from './http.service';
-import { SystemInfo } from './supporting';
+import {CookieManager, SystemInfo} from './supporting';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'registration',
@@ -115,12 +116,20 @@ import { SystemInfo } from './supporting';
 
 export class RegistrationComponent{
 
-  constructor(private httpService: HttpService){}
+  constructor(private httpService: HttpService, private route: Router){}
 
   submit(form: NgForm): any{
     const body = {command: 'register', args: form.value};
     this.httpService.postRequest(SystemInfo.registrationUrl, body).subscribe((data: any) => {
-      console.log(data.body['error_code']);
+      if (data.body['error_code'] === 0) {
+        this.route.navigate(['']);
+      }
+      else if (data.body['error_code'] === 610) {
+        alert('Введенный вами логин уже существует.')
+      }
+      else if (data.body['error_code'] === 611) {
+        alert('Введеные пароли не совпадают.')
+      }
     });
   }
 

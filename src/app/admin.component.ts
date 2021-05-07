@@ -53,19 +53,15 @@ import {CookieManager} from './supporting';
         
         
         <a class="admin-links" routerLinkActive="active" routerLink="change-data">
-          <!--<img class='icons' src="./assets/1.jpg">-->
           Изменение обучающей выборки
         </a>
         <a class="admin-links" routerLinkActive="active" routerLink="learn-model">
-          <!--<img class='icons' src="./assets/3.jpg">-->
           Обучение новой модели
         </a>
         <a class="admin-links" routerLinkActive="active" routerLink="models-history">
-          <!--<img class='icons'  src="./assets/4.jpg">-->
           История обучения моделей
         </a>
         <a class="admin-links" routerLinkActive="active" routerLink="set-model">
-          <!--<img class='icons' src="./assets/2.jpg">-->
           Установка рабочей модели
         </a>
        

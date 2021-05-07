@@ -4,10 +4,6 @@ import { HttpService } from './http.service';
 import { SystemInfo } from './supporting';
 import { CookieManager } from './supporting';
 import { Router } from '@angular/router';
-import { HttpEventType, HttpErrorResponse } from '@angular/common/http';
-import { of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { UploadService} from './upload.service';
 
 
 
@@ -136,58 +132,12 @@ import { UploadService} from './upload.service';
       
       .option {
         color: red;
-      }  
-      
-      /*[data-tooltip] {*/
-    /*position: relative; !* Относительное позиционирование *! */
-   /*}*/
-   /*[data-tooltip]::after {*/
-    /*content: attr(data-tooltip); !* Выводим текст *!*/
-    /*position: absolute; !* Абсолютное позиционирование *!*/
-    /*width: 300px; !* Ширина подсказки *!*/
-    /*left: 0; top: 0; !* Положение подсказки *!*/
-    /*background: #3989c9; !* Синий цвет фона *!*/
-    /*color: #fff; !* Цвет текста *!*/
-    /*padding: 0.5em; !* Поля вокруг текста *!*/
-    /*box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); !* Параметры тени *!*/
-    /*pointer-events: none; !* Подсказка *!*/
-    /*opacity: 0; !* Подсказка невидима *!*/
-    /*transition: 1s; !* Время появления подсказки *!*/
-   /*} */
-   /*[data-tooltip]:hover::after {*/
-     /*opacity: 1; !* Показываем подсказку *!*/
-     /*left: 30px; !* Положение подсказки *!*/
-   /*}  */
-      /*[ngbTooltip] {*/
-    /*position: relative; !* Относительное позиционирование *! */
-   /*}*/
-   /*[ngbTooltip]::after {*/
-    /*content: attr(ngbTooltip); !* Выводим текст *!*/
-    /*position: absolute; !* Абсолютное позиционирование *!*/
-    /*width: 300px; !* Ширина подсказки *!*/
-    /*left: 0; top: 0; !* Положение подсказки *!*/
-    /*background: #3989c9; !* Синий цвет фона *!*/
-    /*color: #fff; !* Цвет текста *!*/
-    /*padding: 0.5em; !* Поля вокруг текста *!*/
-    /*box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); !* Параметры тени *!*/
-    /*pointer-events: none; !* Подсказка *!*/
-    /*opacity: 0; !* Подсказка невидима *!*/
-    /*transition: 1s; !* Время появления подсказки *!*/
-   /*} */
-   /*[ngbTooltip]:hover::after {*/
-     /*opacity: 1; !* Показываем подсказку *!*/
-     /*left: 30px; !* Положение подсказки *!*/
-     /**/
-   /*}*/
+      }
       
       input.ng-touched.ng-invalid {border:solid red 2px;}  
       input.ng-touched.ng-valid {border:solid green 2px;}
     `],
-    template: `<!--<h5 class="data-header">Изменение обучающей выборки</h5>-->
-    <!--<button *ngIf="!form_show" (click)="form_show=!form_show">Показать форму загрузки данных</button>-->
-    <!--<div *ngIf="form_show">-->
-    
-
+    template: `      
     <div class="container">
       <div class="row">
         <div class="col-1"></div>
@@ -202,41 +152,16 @@ import { UploadService} from './upload.service';
                     <span class="ft-name" data-toggle="tooltip" title="{{feature.feature_hint}}">{{feature.feature_name}}</span>
                   </div>
                   <div class="col-6">
-                    <input class='inputs' *ngIf="feature.feature_type=='float'" [name]="feature.feature_name" [placeholder]="feature.feature_name" type="number" 
+                    <input class='inputs' *ngIf="feature.feature_type=='float'" [name]="feature.feature_name"  type="number" 
                            [min]="feature.left_border" [max]="feature.right_border" ngModel required>
-                    <!--<select class='selects' *ngIf="feature.feature_type=='boolean'" [name]="feature.feature_name" ngModel required>-->
-                      <!--<option value="" disabled selected>{{feature.feature_name}}</option>-->
-                      <!--<option *ngFor="let app_value of feature.appropriate_values" [ngValue]="app_value">-->
-                        <!--{{app_value}}-->
-                      <!--</option>-->
-                    <!--</select>-->
-                    <select class='selects' *ngIf="feature.feature_name=='gender'" [name]="feature.feature_name" ngModel required>
-                      <option value="" disabled selected>{{feature.feature_name}}</option>
-                      <option [ngValue]="0">
-                        Женский
+                   
+                    <select class='selects' *ngIf="feature.feature_type=='boolean'" [name]="feature.feature_name" ngModel required>
+                      <option *ngFor="let alias of feature.feature_alias | keyvalue" [ngValue]="alias.key">
+                        {{alias.value}}
                       </option>
-                      <option [ngValue]="1">
-                        Мужской
-                      </option>
+                   
                     </select>
-                    <select class='selects' *ngIf="feature.feature_name=='smoking'" [name]="feature.feature_name" ngModel required>
-                      <option value="" disabled selected>{{feature.feature_name}}</option>
-                      <option [ngValue]="0">
-                        Некурящий
-                      </option>
-                      <option [ngValue]="1">
-                        Курящий
-                      </option>
-                    </select>
-                    <select class='selects' *ngIf="feature.feature_name=='diseasehypertonia'" [name]="feature.feature_name" ngModel required>
-                      <option value="" disabled selected>{{feature.feature_name}}</option>
-                      <option [ngValue]="0">
-                        Отсутствует
-                      </option>
-                      <option [ngValue]="1">
-                        Присутствует
-                      </option>
-                    </select>
+                 
                   </div>
                 </div>
               </div>
@@ -249,12 +174,11 @@ import { UploadService} from './upload.service';
                   </div>
                   <div class="col-6">
                     <select class='selects' name="respiratory_disease" ngModel required>
-                      <option value="" disabled selected>respiratory_disease</option>
                       <option [ngValue]="0">
-                        Нет
+                        Респитарное заболевание отсутствует
                       </option>
                       <option [ngValue]="1">
-                        Да
+                        Респираторное заболевание
                       </option>
                     </select>
                   </div>
@@ -294,8 +218,6 @@ import { UploadService} from './upload.service';
           <h5 class="list-header">Список данных</h5>
           <div class="data">
             <ul>
-              <!--<img *ngIf="loading" src="/assets/2.jpg" alt="loading" />-->
-<!--<img [hidden]="loading" (load)="onLoad()" src="/assets/3.jpg" />-->
               <li *ngFor="let one of sample; index as i">
                 <span class="data-index">ЭКГ №{{i+1}}</span>
                 <button class="info-button" (click)="info(one)">Подробнее</button>
@@ -314,31 +236,32 @@ import { UploadService} from './upload.service';
       </div>
     </div>
     `,
-  providers: [HttpService, UploadService],
+  providers: [HttpService],
 })
 
 export class AdminChangeDataComponent implements OnInit {
 
   sample: Data[] = [];
   features: Params[] = [];
-  form_show: boolean = false;
   err_code: number;
   err_code2: number;
   text: any;
   JSONData: any;
-  tooltipText: string = 'asd';
 
 
 
 
 
-  constructor(private httpService: HttpService, private route: Router, private uploadService: UploadService) {
+  constructor(private httpService: HttpService, private route: Router) {
   }
 
   ngOnInit(): any {
     if (CookieManager.getCookie('user') !== '') {
       this.httpService.getRequest(SystemInfo.systemUrl + '?command=get_features_template').subscribe(
-        (data: any) => this.features = data['data']);
+        (data: any) => {
+          this.features = data['data'];
+          console.log(this.features)
+        });
       this.httpService.getRequest(SystemInfo.systemUrl + '?command=get_fitting_data').subscribe(
         (data: any) => this.sample = data['data']);
     }
@@ -464,7 +387,7 @@ export class Data {
 
 export class Params {
   feature_id:	string;
-  alias: Alias;
+  feature_alias: Alias;
   feature_name:	string;
   feature_hint: string;
   display_name: string;
@@ -478,13 +401,3 @@ export class Alias {
   0: string;
   1: string;
 }
-
-// export class Params2 {
-//   feature_id:	string;
-//   feature_name:	string;
-//   display_name: string;
-//   appropriate_values:	Array<number>;
-//   left_border:	number;
-//   right_border:	number;
-//   feature_type:	string;
-// }

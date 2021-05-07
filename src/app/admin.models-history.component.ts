@@ -62,7 +62,7 @@ import { Router } from '@angular/router';
           <button class="info-button" (click)="info(model)">Подробнее</button>
           <div class="params" *ngIf="model.isshown">
             <div *ngFor="let param of model | keyvalue">
-              <div *ngIf="param.key!='isshown' && param.key!='model_type_id' && param.key!='id' && param.key!='parameters'">
+              <div *ngIf="param.key!='isshown' && param.key!='model_type_id' && param.key!='id' && param.key!='parameters' && param.key!='display_name'">
                 <b>{{param.key}}</b> : <i>{{param.value}}</i>
               </div>
               <!--<div *ngIf="param.key=='parameters'">-->

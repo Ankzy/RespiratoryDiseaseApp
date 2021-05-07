@@ -105,7 +105,7 @@ import { Router } from '@angular/router';
                     <span class="ft-name">{{parameter.display_name}}</span>
                   </div>
                   <div class="col-2">
-                    <input class="inputs" *ngIf="parameter.constraints.type=='Int'" [placeholder]="parameter.display_name" [name]="parameter.parameter_name" type="number" 
+                    <input class="inputs" *ngIf="parameter.constraints.type=='Int'" [name]="parameter.parameter_name" type="number" 
                      [min]="parameter.constraints.left_border" [max]="parameter.constraints.right_border" ngModel required>
               <select class="selects" *ngIf="parameter.constraints.type=='Boolean'" [name]="parameter.parameter_name" ngModel required>
                 <option value="" disabled selected>{{parameter.display_name}}</option>
@@ -132,26 +132,7 @@ import { Router } from '@angular/router';
       
    
     </div>
-    
-    
-    <!--<div *ngFor="let type of types">-->
-     <!---->
-      <!--<div class="learn-model" *ngIf="type.is_shown">-->
-        <!--<form #myForm="ngForm">-->
-          <!--<div class='params' *ngFor="let parameter of type.parameters">-->
-            <!--<input class="inputs" *ngIf="parameter.constraints.type=='Int'" [placeholder]="parameter.parameter_name" [name]="parameter.parameter_name" type="number" -->
-                   <!--[min]="parameter.constraints.left_border" [max]="parameter.constraints.right_border" ngModel required>-->
-            <!--<select class="selects" *ngIf="parameter.constraints.type=='Boolean'" [name]="parameter.parameter_name" ngModel required>-->
-              <!--<option value="" disabled selected>{{parameter.parameter_name}}</option>-->
-              <!--<option *ngFor="let app_value of [1, 2]" [ngValue]="app_value">-->
-                <!--{{app_value}}-->
-              <!--</option>-->
-            <!--</select>-->
-          <!--</div>-->
-          <!--<button class='submit-button' type="submit" (click)="submit(type.model_type_id, myForm)" [disabled]="myForm.invalid">Обучить модель</button>-->
-        <!--</form>-->
-      <!--</div>-->
-    <!--</div>-->
+      
       
 `,
   providers: [HttpService]

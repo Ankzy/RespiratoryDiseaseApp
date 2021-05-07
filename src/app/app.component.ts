@@ -51,6 +51,12 @@ import {CookieManager} from './supporting';
                     <li class="nav-item">
                       <a *ngIf="router.url==='/'" [hidden]="router.url==='/registration' || router.url==='/login' || isAdmin==0" class="nav-link" routerLink="/admin">Администратор</a>
                     </li>
+                    <li class="nav-item">
+                      <a *ngIf="router.url==='/login'" class="nav-link" routerLink="/registration">Регистрация</a>
+                    </li>
+                    <li class="nav-item">
+                      <a *ngIf="router.url==='/registration'" class="nav-link" routerLink="/login">Авторизация</a>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -68,6 +74,5 @@ export class AppComponent {
 
   constructor(public router: Router) {
     this.isAdmin = CookieManager.getCookie('admin');
-    console.log(this.isAdmin)
   }
 }

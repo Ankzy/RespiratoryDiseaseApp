@@ -135,7 +135,9 @@ export class LoginComponent implements OnInit{
     const requestBody = {command: 'login', args: form.value};
 
     this.httpService.postRequest(SystemInfo.loginUrl, requestBody).subscribe((data: any) => {
+      console.log(data.body['error_code']);
       if (data.body['error_code'] === 0) {
+        console.log(CookieManager.getCookie('admin'));
         if (CookieManager.getCookie('admin') == 0) {
           this.route.navigate(['']);
         }

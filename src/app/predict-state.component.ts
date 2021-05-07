@@ -60,61 +60,23 @@ import {CookieManager, SystemInfo} from './supporting';
               <div class="row">
                 <div class="col-4"></div>
                 <div class="col-1">
-                  <span class="ft-name">{{feature.feature_name}}</span>
+                  <span class="ft-name" data-toggle="tooltip" title="{{feature.feature_hint}}">{{feature.feature_name}}</span>
                 </div>
                 <div class="col-2">
                   <input class='inputs' *ngIf="feature.feature_type=='float'" [name]="feature.feature_name" type="number" 
-                         [placeholder]="feature.feature_name" [min]="feature.left_border" [max]="feature.right_border" ngModel required>
-                  <!--<select class='selects' *ngIf="feature.feature_type=='boolean'" [name]="feature.feature_name" ngModel required>-->
-                    <!--<option value="" disabled selected>{{feature.feature_name}}</option>-->
-                    <!--<option *ngFor="let app_value of feature.appropriate_values" [ngValue]="app_value">-->
-                      <!--{{app_value}}-->
-                    <!--</option>-->
-                  <!--</select>-->
-                  
-                  <select class='selects' *ngIf="feature.feature_name=='gender'" [name]="feature.feature_name" ngModel required>
-                      <option value="" disabled selected>{{feature.feature_name}}</option>
-                      <option [ngValue]="0">
-                        Женский
+                        [min]="feature.left_border" [max]="feature.right_border" ngModel required>
+                 
+                  <select class='selects' *ngIf="feature.feature_type=='boolean'" [name]="feature.feature_name" ngModel required>
+                      <option *ngFor="let alias of feature.feature_alias | keyvalue" [ngValue]="alias.key">
+                        {{alias.value}}
                       </option>
-                      <option [ngValue]="1">
-                        Мужской
-                      </option>
-                    </select>
-                    <select class='selects' *ngIf="feature.feature_name=='smoking'" [name]="feature.feature_name" ngModel required>
-                      <option value="" disabled selected>{{feature.feature_name}}</option>
-                      <option [ngValue]="0">
-                        Некурящий
-                      </option>
-                      <option [ngValue]="1">
-                        Курящий
-                      </option>
-                    </select>
-                    <select class='selects' *ngIf="feature.feature_name=='diseasehypertonia'" [name]="feature.feature_name" ngModel required>
-                      <option value="" disabled selected>{{feature.feature_name}}</option>
-                      <option [ngValue]="0">
-                        Отсутствует
-                      </option>
-                      <option [ngValue]="1">
-                        Присутствует
-                      </option>
-                    </select>
-                  
+                   
+                  </select>
                   
                 </div>
               </div>
             </div>
             
-            
-            <!--<input class='inputs' *ngIf="feature.feature_type=='float'" [name]="feature.feature_name" type="number" -->
-                   <!--[placeholder]="feature.feature_name" [min]="feature.left_border" [max]="feature.right_border" ngModel required>-->
-            <!--<select class='selects' *ngIf="feature.feature_type=='boolean'" [name]="feature.feature_name" ngModel required>-->
-              <!--<option value="" disabled selected>{{feature.feature_name}}</option>-->
-              <!--<option *ngFor="let app_value of feature.appropriate_values" [ngValue]="app_value">-->
-                <!--{{app_value}}-->
-              <!--</option>-->
-            <!--</select>-->
-            <!--<span class="ft-name">{{feature.feature_name}}</span>-->
           </div>
           <button class='submit-button' type="submit" (click)="submit(myForm)" [disabled]="myForm.invalid">Отправить форму</button>
         </form>
@@ -136,7 +98,7 @@ export class PredictStateComponent implements OnInit{
         (data: any) => this.features = data['data']
       );
       this.httpService.getRequest('http://localhost:8080/system?command=get_working_model').subscribe(
-        (data: any) => this.working_model = data['display_name']
+        (data: any) => this.working_model = data['data']['display_name']
       );
     }
     else{
@@ -170,6 +132,7 @@ export class PredictStateComponent implements OnInit{
 export class Params {
   feature_id:	string;
   feature_name:	string;
+  feature_hint: string;
   display_name: string;
   appropriate_values:	Array<number>;
   left_border:	number;
