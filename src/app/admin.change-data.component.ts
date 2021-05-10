@@ -9,8 +9,7 @@ import { Router } from '@angular/router';
 
 @Component({
     selector: 'admin-change-data',
-    styles: [`
-      
+    styles: [`      
       .add-header {
         margin-left: 135px;
         margin-bottom: 20px;
@@ -27,13 +26,7 @@ import { Router } from '@angular/router';
         margin-bottom: 20px;
         margin-top: 20px;
       }
-      .data-header {
-        margin-left: 608px;
-        margin-bottom: 25px;
-        margin-top: 40px;
-      }
       .data {
-        /*background-color: #e3f2fd;*/
         margin-left: 60px;
         border-radius: 23px;
         padding-bottom: 14px;
@@ -51,30 +44,11 @@ import { Router } from '@angular/router';
         width: 150px;
         border-radius: 6px;
       }
-      .div-data-form {
-        padding-left: 7px;
-        padding-right: 7px;
-        padding-top: 15px;
-        /*margin-left: 22px;*/
-        /*margin-right: 15px;*/
-        width: 1500px;
-        margin: 0 auto;
-        /*background-color: #c2c3c4;*/
-        /*background-color: #e3f2fd;*/
-        /*border-style: solid;*/
-        /*border-width: 2px;*/
-        /*border-color: black;*/
-        /*border-radius: 23px;*/
-      }
-      .cnt-left {
-        margin-left: 1px !important;
-      }
       .data-form {
         width: 380px;
         margin-left: 20px;
       }
       .add-data{
-        /*display: inline;*/
         margin-top: 4px;
       }
       .file-form {
@@ -115,10 +89,6 @@ import { Router } from '@angular/router';
         text-align: left;
       }
       
-      .bez {
-        display: inline;
-      }
-      
       hr {
         background-color: black;
         opacity: 0.6;
@@ -129,10 +99,6 @@ import { Router } from '@angular/router';
         margin-top: 30px;
         margin-bottom: 30px;
         }
-      
-      .option {
-        color: red;
-      }
       
       input.ng-touched.ng-invalid {border:solid red 2px;}  
       input.ng-touched.ng-valid {border:solid green 2px;}
@@ -269,13 +235,7 @@ export class AdminChangeDataComponent implements OnInit {
       this.route.navigate(['login']);
     }
   }
-
-  loading: boolean = true;
-
-  onLoad() {
-    this.loading = false;
-    console.log('ads')
-  }
+  
 
   info(model): any {
     if (model.isshown !== false && model.isshown !== true) {
@@ -350,7 +310,7 @@ export class AdminChangeDataComponent implements OnInit {
       result.push(obj);
     }
 
-    console.log(JSON.stringify(result)); //JSON
+    console.log(JSON.stringify(result));
     this.JSONData = JSON.stringify(result);
 
   }

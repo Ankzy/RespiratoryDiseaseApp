@@ -21,8 +21,6 @@ import { Router } from '@angular/router';
           margin: 0 auto;
           padding: 15px;
           text-align: center;
-          /*background-color: #e3f2fd;*/
-          /*background-color: #c2c3c4;*/
           border-radius: 23px;
           
         }
@@ -35,16 +33,6 @@ import { Router } from '@angular/router';
           margin-right: 20px;
           margin-bottom: 30px;
        
-        }
-        .learn-model {
-          background-color: #e3f2fd;
-          border-radius: 23px;
-          padding-top: 20px;
-          padding-bottom: 14px;
-          margin: 0 auto;
-          width: 1500px;
-          margin-top: 50px;
-          text-align:center;
         }
         .params {
           margin-left: 10px;

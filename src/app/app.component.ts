@@ -8,8 +8,6 @@ import {CookieManager} from './supporting';
       `
         .navbar {
           height: 40px;
-          
-
         }
 
         .navbar-brand {
@@ -19,7 +17,6 @@ import {CookieManager} from './supporting';
         .nav-link {
           color: #346dff !important;
           text-decoration: underline;
-          margin-left: 30px;
         }
 
         hr {
@@ -30,7 +27,14 @@ import {CookieManager} from './supporting';
           width: 1490px;
           margin-left: 20px;
 
-        }
+        }  
+        .icons {
+        margin-left: 10px;
+        width: 20px;
+        height: 20px;
+        margin-bottom: 2px;
+       
+      }
       `
     ],
     template: `      
@@ -50,6 +54,9 @@ import {CookieManager} from './supporting';
                     </li>
                     <li class="nav-item">
                       <a *ngIf="router.url==='/'" [hidden]="router.url==='/registration' || router.url==='/login' || isAdmin==0" class="nav-link" routerLink="/admin">Администратор</a>
+                    </li>
+                    <li class="nav-item">
+                      <a [hidden]="router.url==='/registration' || router.url==='/login' || isAdmin==0"  class="nav-link" routerLink="/admin/users"><img class="icons" src="./assets/users.png"></a>
                     </li>
                     <li class="nav-item">
                       <a *ngIf="router.url==='/login'" class="nav-link" routerLink="/registration">Регистрация</a>

@@ -17,7 +17,6 @@ import { CookieManager } from './supporting';
         margin: 0 auto;
         padding-top: 10px;
         text-align: center;
-        /*background-color: #e3f2fd;*/
         border-radius: 23px;
       }
       .add-data{
@@ -47,43 +46,6 @@ import { CookieManager } from './supporting';
           width: 180px;
           margin: 15px;
         }
-      .admin-header {
-        text-align: center;
-        margin-bottom: 15px;
-      }
-
-      .admin-menu {
-        margin-top: 15px;
-        text-align: center;
-      }
-
-      .admin-links {
-        /*background-color: #4bd299;*/
-        /*background-size: 5000px;*/
-        width: 290px;
-        margin: 10px;
-        display: inline-block;
-        padding: 4px;
-        border-radius: 30px;
-        color: black;
-        border-style: solid;
-        border-width: 2px;
-        border-color: black;
-        text-decoration: none;
-        margin-bottom: 30px;
-      }
-
-      .icons {
-        width: 50px;
-        height: 50px;
-        margin-left: 14px;
-      }
-
-      .active {
-        border-color: #346dff;
-        border-style: solid;
-        border-width: 2px;
-      }
 
     `],
     template: `
@@ -101,7 +63,7 @@ import { CookieManager } from './supporting';
                 </div>
                 <div class="col-2">
                   <input class='inputs' name="login" type="text" placeholder="Логин" ngModel required>
-                  <input class='inputs' name="password" type="text" placeholder="Пароль" ngModel required>
+                  <input class='inputs' name="password" type="password" placeholder="Пароль" ngModel required>
                   <select class='selects' name="admin" ngModel required>
                     <option value="" disabled selected>Роль</option>
                     <option [ngValue]="1">
@@ -144,6 +106,15 @@ export class LoginComponent implements OnInit{
         else if (CookieManager.getCookie('admin') == 1) {
           this.route.navigate(['admin'])
         }
+      }
+      else if (data.body['error_code'] === 607) {
+        alert('Выбрана неверная роль!')
+      }
+      else if (data.body['error_code'] === 608) {
+        alert('Пользователя с введенным логином не существует.')
+      }
+      else if (data.body['error_code'] === 609) {
+        alert('Неверный пароль.')
       }
     });
   }

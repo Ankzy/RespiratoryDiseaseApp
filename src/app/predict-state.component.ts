@@ -13,7 +13,6 @@ import {CookieManager, SystemInfo} from './supporting';
         margin: 0 auto;
         padding-top: 10px;
         text-align: center;
-        /*background-color: #e3f2fd;*/
         border-radius: 23px;
       }
       .add-data{

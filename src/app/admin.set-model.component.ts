@@ -14,11 +14,8 @@ import { Router } from '@angular/router';
       }
       .setmodel-div {
         width: 1500px;
-  
         padding-top: 20px;
         padding-bottom: 10px;
-   
-        /*background-color: #e3f2fd;*/
         border-radius: 23px;
       }
       .model {
@@ -51,7 +48,6 @@ import { Router } from '@angular/router';
           
             <div class="model">{{model.display_name}} (score {{model.test_f_score}})</div>
           
-            <!--<div *ngIf="model.working">Рабочая</div>-->
             <button class="working-button" (click)="setModel(model)" [disabled]="model.working">Сделать рабочей</button>
             <img *ngIf="model.working" class='icons' src="./assets/6.jpg">
           

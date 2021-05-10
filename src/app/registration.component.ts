@@ -16,7 +16,6 @@ import {Router} from '@angular/router';
         margin: 0 auto;
         padding-top: 10px;
         text-align: center;
-        /*background-color: #e3f2fd;*/
         border-radius: 23px;
       }
       .add-data{
@@ -35,56 +34,12 @@ import {Router} from '@angular/router';
         border-radius: 8px;
         margin-top: 4px;
       }
-      .selects {
-        margin-left: 80px;
-        width: 210px;
-        border-radius: 8px;
-        margin-top: 4px;
-      }
       .submit-button {
           border-radius: 16px;
           width: 180px;
           margin: 15px;
-        }
-      .admin-header {
-        text-align: center;
-        margin-bottom: 15px;
       }
-
-      .admin-menu {
-        margin-top: 15px;
-        text-align: center;
-
-      }
-
-      .admin-links {
-        /*background-color: #4bd299;*/
-        /*background-size: 5000px;*/
-        width: 290px;
-        margin: 10px;
-        display: inline-block;
-        padding: 4px;
-        border-radius: 30px;
-        color: black;
-        border-style: solid;
-        border-width: 2px;
-        border-color: black;
-        text-decoration: none;
-        margin-bottom: 30px;
-
-      }
-
-      .icons {
-        width: 50px;
-        height: 50px;
-        margin-left: 14px;
-      }
-
-      .active {
-        border-color: #346dff;
-        border-style: solid;
-        border-width: 2px;
-      }
+      
 
     `],
     template: `
@@ -102,8 +57,8 @@ import {Router} from '@angular/router';
                 </div>
                 <div class="col-2">
                   <input class='inputs' name="login" type="text" placeholder="Логин" ngModel required>
-                  <input class='inputs' name="password" type="text" placeholder="Пароль" ngModel required>
-                  <input class='inputs' name="password_confirm" type="text" placeholder="Подтверждение пароля" ngModel required>
+                  <input class='inputs' name="password" type="password" placeholder="Пароль" ngModel required>
+                  <input class='inputs' name="password_confirm" type="password" placeholder="Подтверждение пароля" ngModel required>
                 </div>
               </div>
             </div>

@@ -10,16 +10,12 @@ import {CookieManager} from './supporting';
         text-align: center;
         margin-bottom: 15px;
       }
-
       .admin-menu {
         margin-top: 15px;
         text-align: center;
 
       }
-
       .admin-links {
-        /*background-color: #4bd299;*/
-        /*background-size: 5000px;*/
         width: 290px;
         margin: 10px;
         display: inline-block;
@@ -33,19 +29,11 @@ import {CookieManager} from './supporting';
         margin-bottom: 30px;
 
       }
-
-      .icons {
-        width: 50px;
-        height: 50px;
-        margin-left: 14px;
-      }
-
       .active {
         border-color: #346dff;
         border-style: solid;
         border-width: 2px;
       }
-
     `],
     template: `
       <h4 class='admin-header'>Администрирование системы</h4>
