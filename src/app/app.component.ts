@@ -12,6 +12,7 @@ import {CookieManager} from './supporting';
 
         .navbar-brand {
           margin-left: 20px;
+          margin-right: 0px !important;
         }
 
         .nav-link {
@@ -26,21 +27,28 @@ import {CookieManager} from './supporting';
           border: none;
           width: 1490px;
           margin-left: 20px;
-
         }  
+        
         .icons {
         margin-left: 10px;
         width: 20px;
         height: 20px;
         margin-bottom: 2px;
-       
-      }
+        }
+        
+        .question-img {
+        margin-left: 8px;
+        width: 18px;
+        
+        margin-bottom: 8px;
+        }
       `
     ],
     template: `      
       <div>
         <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
           <a class="navbar-brand" routerLink="">Respiratory Disease App</a>
+          <a routerLink="/about"><img class='question-img' src="./assets/question.png"></a>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="container">
               <div class="row">
