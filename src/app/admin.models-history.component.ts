@@ -41,7 +41,7 @@ import { Router } from '@angular/router';
           <div class="params" *ngIf="model.isshown">
             <div *ngFor="let param of model | keyvalue">
               <div *ngIf="param.key!='isshown' && param.key!='model_type_id' && param.key!='id' && param.key!='parameters' && param.key!='display_name'">
-                <b>{{param.key}}</b> : <i>{{param.value}}</i>
+                <b data-toggle="tooltip" [title]="tooltips[param.key]">{{param.key}}</b> : <i>{{param.value}}</i>
               </div>
             </div>
           </div>
@@ -54,6 +54,18 @@ import { Router } from '@angular/router';
 export class AdminModelsHistoryComponent implements OnInit{
 
   models: Model[] = [];
+
+  tooltips = {
+    train_accuracy: 'Доля правильно классифицированных объектов (обучающая выборка)',
+    train_recall: 'Полнота (обучающая выборка)',
+    train_precision: 'Точность (обучающая выборка)',
+    train_f_score: 'F-мера (обучающая выборка)',
+    test_accuracy: 'Доля правильно классифицированных объектов (тестовая выборка)',
+    test_recall: 'Полнота (тестовая выборка)',
+    test_precision: 'Точность (тестовая выборка)',
+    test_f_score: 'F-мера (тестовая выборка)',
+    date: 'Дата обучения модели',
+  }
 
   info(model): any{
     if (model.isshown !== false && model.isshown !== true) { model.isshown = true; }
