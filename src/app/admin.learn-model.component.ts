@@ -39,9 +39,10 @@ import { Router } from '@angular/router';
           margin-top: 4px;
         }
         .inputs {
-          width: 220px;
+          width: 200px;
           border-radius: 8px;
           text-align: center;
+          margin-left: 20px;
           
         }  
         .inputs::placeholder {
@@ -64,6 +65,7 @@ import { Router } from '@angular/router';
           border-width: 2px;
         }
         .ft-name {
+          margin-left: 60px;
           float: left;
         }
         
@@ -86,27 +88,27 @@ import { Router } from '@angular/router';
               
               <div class="container">
                 <div class="row">
-                  <div class="col-4">
+                  <div class="col-3">
                     
                   </div>
-                  <div class="col-2">
+                  <div class="col-3">
                     <span class="ft-name">{{parameter.display_name}}</span>
                   </div>
                   <div class="col-2">
                     <input class="inputs" *ngIf="parameter.constraints.type=='Int'" [name]="parameter.parameter_name" type="number" 
                      [min]="parameter.constraints.left_border" [max]="parameter.constraints.right_border" ngModel required>
-              <select class="selects" *ngIf="parameter.constraints.type=='Boolean'" [name]="parameter.parameter_name" ngModel required>
-                <option value="" disabled selected>{{parameter.display_name}}</option>
-                <option *ngFor="let app_value of [1, 2]" [ngValue]="app_value">
-                  {{app_value}}
-                </option>
-              </select>
-              <select class="selects" *ngIf="parameter.constraints.type=='string'" [name]="parameter.parameter_name" ngModel required>
-                <option value="" disabled selected>{{parameter.display_name}}</option>
-                <option *ngFor="let app_value of ['gini', 'entropy']" [ngValue]="app_value">
-                  {{app_value}}
-                </option>
-              </select>
+                    <select class="selects" *ngIf="parameter.constraints.type=='Boolean'" [name]="parameter.parameter_name" ngModel required>
+                      <option value="" disabled selected>{{parameter.display_name}}</option>
+                      <option *ngFor="let app_value of [1, 2]" [ngValue]="app_value">
+                        {{app_value}}
+                      </option>
+                    </select>
+                    <select class="selects" *ngIf="parameter.constraints.type=='string'" [name]="parameter.parameter_name" ngModel required>
+                      <option value="" disabled selected>{{parameter.display_name}}</option>
+                      <option *ngFor="let app_value of ['gini', 'entropy']" [ngValue]="app_value">
+                        {{app_value}}
+                      </option>
+                    </select>
                   </div>
                 </div>
               </div>
