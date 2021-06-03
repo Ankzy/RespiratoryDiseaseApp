@@ -42,7 +42,7 @@ import { Router } from '@angular/router';
           width: 200px;
           border-radius: 8px;
           text-align: center;
-          margin-left: 20px;
+          margin-left: 40px;
           
         }  
         .inputs::placeholder {
@@ -65,7 +65,7 @@ import { Router } from '@angular/router';
           border-width: 2px;
         }
         .ft-name {
-          margin-left: 60px;
+          margin-left: 32px;
           float: left;
         }
         
