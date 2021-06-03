@@ -142,7 +142,7 @@ export class AdminLearnModelComponent implements OnInit{
 
   ngOnInit(): any {
     if (CookieManager.getCookie('user') !== '') {
-      this.httpService.getRequest('http://localhost:8080/system?command=get_model_types_template').subscribe(
+      this.httpService.getRequest(SystemInfo.systemUrl + '?command=get_model_types_template').subscribe(
         (data: any) => {
           this.types = data['data'];
           this.activeButton = this.types[0];
