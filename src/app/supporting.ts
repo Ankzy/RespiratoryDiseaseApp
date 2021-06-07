@@ -1,6 +1,8 @@
+import { environment} from '../environments/environment.prod';
+
 export class SystemInfo{
 
-  static domain = 'http://localhost';
+  static domain = 'http://' + environment.api_url;
   static port = '8080';
   static baseUrl = SystemInfo.domain + ':' + SystemInfo.port;
   static systemUrl = SystemInfo.domain + ':' + SystemInfo.port + '/system';
